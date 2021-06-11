@@ -14,3 +14,9 @@ Visual Studio 2012 安装
 提取码：sic3 
 
 安装时仅需选择 Visual c++ 工具
+
+Visual Studio 2019 打开
+========
+vs2019 打开后不升级 SDK 和工具集，即为解决方案选择 Visua Studio 2012 平台工具集（v110）
+
+之后在 CoGIS 解决方案文件夹下会自动产生 .vs 的文件夹，在 git 中选择不跟踪它，则会自动更改 .gitignore 文件，提交并推送后就有了 2021-06-11 10:52 的 bc7afde
