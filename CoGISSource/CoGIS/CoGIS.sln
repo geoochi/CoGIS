@@ -1,23 +1,47 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoGIS", "CoGIS\CoGIS.vcxproj", "{0E6ED807-377F-4EB8-9438-FB8033441202}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E3B244DC-340F-4887-BC0E-999EF2667A4F} = {E3B244DC-340F-4887-BC0E-999EF2667A4F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoLogic", "..\CoLogic\CoLogic.vcxproj", "{679361D3-FD90-43A9-A6E9-EF557F07E47A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoDB", "..\CoDB\CoDB.vcxproj", "{0DF372F4-830F-4BCD-8E40-21E50953653E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{679361D3-FD90-43A9-A6E9-EF557F07E47A} = {679361D3-FD90-43A9-A6E9-EF557F07E47A}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoMouse", "..\MouseOper\MouseOper.vcxproj", "{B032CCDB-4A8A-49A7-8A06-8D5887752E79}"
+	ProjectSection(ProjectDependencies) = postProject
+		{37E86725-6763-43B8-86FB-08F3E95C386B} = {37E86725-6763-43B8-86FB-08F3E95C386B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoPoint", "..\CoPoint\CoPoint.vcxproj", "{6A11278C-CADE-458A-8382-E1DF2F7CB154}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B032CCDB-4A8A-49A7-8A06-8D5887752E79} = {B032CCDB-4A8A-49A7-8A06-8D5887752E79}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoLine", "..\CoLine\CoLine.vcxproj", "{45657393-0C1E-47D1-9C93-2E1F7AEC3CEF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A11278C-CADE-458A-8382-E1DF2F7CB154} = {6A11278C-CADE-458A-8382-E1DF2F7CB154}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoArea", "..\CoPolygon\CoPolygon.vcxproj", "{5B984AB9-CD9A-4F1C-97B7-E54C7D8001C6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{45657393-0C1E-47D1-9C93-2E1F7AEC3CEF} = {45657393-0C1E-47D1-9C93-2E1F7AEC3CEF}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoAllFirm", "..\CoOverallTransForm\CoOverallTransForm.vcxproj", "{E3B244DC-340F-4887-BC0E-999EF2667A4F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5B984AB9-CD9A-4F1C-97B7-E54C7D8001C6} = {5B984AB9-CD9A-4F1C-97B7-E54C7D8001C6}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoDLG", "..\CoDLG\CoDLG.vcxproj", "{37E86725-6763-43B8-86FB-08F3E95C386B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0DF372F4-830F-4BCD-8E40-21E50953653E} = {0DF372F4-830F-4BCD-8E40-21E50953653E}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
