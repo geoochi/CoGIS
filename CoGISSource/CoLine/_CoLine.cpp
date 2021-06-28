@@ -3,7 +3,7 @@
 #include <_CoDLG.H>
 #include <_CoDB.h>
 //----------------------------------------------------------
-CoInputLine::CoInputLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen)
+CoInputLine::CoInputLine(CView* ptView, CoDB DB, CString ActiveTable, CoScreen Screen)
 {
 	m_DB = DB;
 	m_ptView = ptView;
@@ -21,20 +21,20 @@ CoInputLine::~CoInputLine()
 {
 
 }
-void CoInputLine::LButtonDown (UINT nFlags, CoPnt point)
+void CoInputLine::LButtonDown(UINT nFlags, CoPnt point)
 {
 	m_bDraw = TRUE;
-	m_PerPoint = m_PtOrigin=point;
+	m_PerPoint = m_PtOrigin = point;
 	m_Line.push_back(point);
 }
 void CoInputLine::MouseMove(UINT nFlags, CoPnt point)
 {
 	//橡皮线
-	CoCDC dc(m_ptView,m_Screen);
+	CoCDC dc(m_ptView, m_Screen);
 	if (m_bDraw)
 	{
-		dc.XDrawLine(m_PtOrigin,m_PerPoint,m_LinePro);
-		dc.XDrawLine(m_PtOrigin,point,m_LinePro);
+		dc.XDrawLine(m_PtOrigin, m_PerPoint, m_LinePro);
+		dc.XDrawLine(m_PtOrigin, point, m_LinePro);
 		m_PerPoint = point;
 	}
 }
@@ -43,21 +43,21 @@ void CoInputLine::RButtonDown(UINT nFlags, CoPnt point)
 {
 	m_bDraw = FALSE;
 	//保存线
-	CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+	CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 	CoFeatureset feature;
 	if (m_Line.size())
 	{
-		feature.Open(&conn,m_ActiveTable);
-		feature.LineAdd(m_Line,m_LinePro);
+		feature.Open(&conn, m_ActiveTable);
+		feature.LineAdd(m_Line, m_LinePro);
 		m_Line.clear();
 	}
 }
 
 void CoInputLine::GetLinePro()
 {
-	if (InputLineDLG(m_LinePro)==FALSE)
+	if (InputLineDLG(m_LinePro) == FALSE)
 	{
-		m_LinePro.LineColor = RGB(0,0,0);
+		m_LinePro.LineColor = RGB(0, 0, 0);
 		m_LinePro.LineLayer = 0;
 		m_LinePro.LineStyle = 0;
 		m_LinePro.LineWidth = 1;
@@ -70,7 +70,7 @@ CoScreen CoSelectLine::m_Screen;
 vector<CoPnt> CoSelectLine::m_Line;
 CoLinePro CoSelectLine::m_LinePro;
 bool CoSelectLine::m_Selected = FALSE;
-CoSelectLine::CoSelectLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen,bool ISDrawPnt)
+CoSelectLine::CoSelectLine(CView* ptView, CoDB DB, CString ActiveTable, CoScreen Screen, bool ISDrawPnt)
 {
 	m_IsDrawPnt = ISDrawPnt;
 	m_ptView = ptView;
@@ -94,20 +94,20 @@ CoSelectLine::CoSelectLine()
 
 CoSelectLine::~CoSelectLine()
 {
-	
+
 }
 void CoSelectLine::LButtonDown(UINT nFlags, CoPnt point)
 {
 	m_bDraw = TRUE;
-	m_orignpnt = m_perpoint = point;	
+	m_orignpnt = m_perpoint = point;
 }
 
 void CoSelectLine::LButtonUp(UINT nFlags, CoPnt point)
 {
 	m_bDraw = FALSE;
-	CoCDC dc(m_ptView,m_Screen);
-	dc.XDrawRectNULLFill(m_orignpnt,point);
-	if (m_orignpnt.x>point.x)
+	CoCDC dc(m_ptView, m_Screen);
+	dc.XDrawRectNULLFill(m_orignpnt, point);
+	if (m_orignpnt.x > point.x)
 	{
 		m_rect.xmax = m_orignpnt.x;
 		m_rect.xmin = point.x;
@@ -117,8 +117,8 @@ void CoSelectLine::LButtonUp(UINT nFlags, CoPnt point)
 		m_rect.xmin = m_orignpnt.x;
 		m_rect.xmax = point.x;
 	}
-	
-	if (m_orignpnt.y>point.y)
+
+	if (m_orignpnt.y > point.y)
 	{
 		m_rect.ymax = m_orignpnt.y;
 		m_rect.ymin = point.y;
@@ -128,33 +128,33 @@ void CoSelectLine::LButtonUp(UINT nFlags, CoPnt point)
 		m_rect.ymin = m_orignpnt.y;
 		m_rect.ymax = point.y;
 	}
-	CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+	CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 	CoFeatureset feature;
-	feature.Open(&conn,m_ActiveTB);
+	feature.Open(&conn, m_ActiveTB);
 	CoRecorset recorset;
-	recorset.Open(&feature,m_rect);
+	recorset.Open(&feature, m_rect);
 	CoLog math;
-	while(!recorset.CoEOF())
+	while (!recorset.CoEOF())
 	{
-		if(m_Line.size())
+		if (m_Line.size())
 			m_Line.clear();
-		recorset.GetLine(m_Line,m_LinePro);
-		if (math.ISLineInRect(m_rect,m_Line))
+		recorset.GetLine(m_Line, m_LinePro);
+		if (math.ISLineInRect(m_rect, m_Line))
 		{
-			SetTimer(m_ptView->m_hWnd,1,500,TimerProc);
-			if (MessageBox(m_ptView->m_hWnd,"选择该线吗?","提示",MB_YESNO | MB_ICONQUESTION)==IDYES)
+			SetTimer(m_ptView->m_hWnd, 1, 500, TimerProc);
+			if (MessageBox(m_ptView->m_hWnd, "选择该线吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES)
 			{
-				dc.DrawLine(m_Line,m_LinePro);
+				dc.DrawLine(m_Line, m_LinePro);
 				m_Selected = TRUE;//选择成功
-				KillTimer(m_ptView->m_hWnd,1);
-				if(m_IsDrawPnt)
+				KillTimer(m_ptView->m_hWnd, 1);
+				if (m_IsDrawPnt)
 					dc.DrawPoint(m_Line);
 				break;
 			}
-			KillTimer(m_ptView->m_hWnd,1);
+			KillTimer(m_ptView->m_hWnd, 1);
 			//dc.CoInvalidateRect(TRUE,m_Line);
 		}
-		if(m_IsDrawPnt)
+		if (m_IsDrawPnt)
 			dc.DrawPoint(m_Line);
 		recorset.MoveNext();
 		m_Line.clear();
@@ -165,34 +165,34 @@ void CoSelectLine::MouseMove(UINT nFlags, CoPnt point)
 {
 	if (m_bDraw)
 	{
-		CoCDC dc(m_ptView,m_Screen);
-		dc.XDrawRectNULLFill(m_orignpnt,m_perpoint);
-		dc.XDrawRectNULLFill(m_orignpnt,point);
+		CoCDC dc(m_ptView, m_Screen);
+		dc.XDrawRectNULLFill(m_orignpnt, m_perpoint);
+		dc.XDrawRectNULLFill(m_orignpnt, point);
 		m_perpoint = point;
 	}
-	
+
 }
 void CoSelectLine::DelSelect()
 {
 	m_Selected = FALSE;
-	if(m_Line.size())
+	if (m_Line.size())
 		m_Line.clear();
 }
 //////////////////////////////////////////////////////////////////////////
 
-CoMoveLine::CoMoveLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen)
+CoMoveLine::CoMoveLine(CView* ptView, CoDB DB, CString ActiveTable, CoScreen Screen)
 {
 	m_ptView = ptView;
 	m_DB = DB;
 	m_ActiveTB = ActiveTable;
-	CoSelectLine obj(m_ptView,m_DB,m_ActiveTB,Screen,FALSE);
+	CoSelectLine obj(m_ptView, m_DB, m_ActiveTB, Screen, FALSE);
 	m_SelectLine = obj;
 	m_Selected = m_SelectLine.m_Selected;
 
 	m_bDraw = FALSE;
 	if (m_Selected)
 	{
-		m_line =m_perLine= m_SelectLine.m_Line;
+		m_line = m_perLine = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
 	}
 	m_Screen.sx = Screen.sx;
@@ -210,7 +210,7 @@ CoMoveLine::~CoMoveLine()
 void CoMoveLine::LButtonDown(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonDown(nFlags,point);
+		m_SelectLine.LButtonDown(nFlags, point);
 	else
 	{
 		m_bDraw = TRUE;
@@ -221,17 +221,17 @@ void CoMoveLine::LButtonDown(UINT nFlags, CoPnt point)
 void CoMoveLine::LButtonUp(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonUp(nFlags,point);
+		m_SelectLine.LButtonUp(nFlags, point);
 	else
 	{
-		CoCDC dc(m_ptView,m_Screen);
-		dc.DrawLine(m_line,m_linepro);
+		CoCDC dc(m_ptView, m_Screen);
+		dc.DrawLine(m_line, m_linepro);
 		m_bDraw = FALSE;
 		//存库
-		CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+		CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 		CoFeatureset feature;
-		feature.Open(&conn,m_ActiveTB);
-		feature.LineUpdate(m_line,m_linepro);
+		feature.Open(&conn, m_ActiveTB);
+		feature.LineUpdate(m_line, m_linepro);
 		m_line.clear();
 		m_perLine.clear();
 		m_SelectLine.m_Selected = FALSE;
@@ -240,7 +240,7 @@ void CoMoveLine::LButtonUp(UINT nFlags, CoPnt point)
 	m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
 	{
-		m_line =m_perLine= m_SelectLine.m_Line;
+		m_line = m_perLine = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
 	}
 }
@@ -248,17 +248,17 @@ void CoMoveLine::LButtonUp(UINT nFlags, CoPnt point)
 void CoMoveLine::MouseMove(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.MouseMove(nFlags,point);
+		m_SelectLine.MouseMove(nFlags, point);
 	else
 	{
-		if(m_bDraw)
+		if (m_bDraw)
 		{
-			CoLog math((point.x-m_ptOrigin.x),(point.y-m_ptOrigin.y));
-		    CoCDC dc(m_ptView,m_Screen);
-		    dc.XDrawLine(m_perLine,m_linepro);
-		    math.displayFcn(m_line,1);
-		    dc.XDrawLine(m_line,m_linepro);
-		    m_perLine = m_line;
+			CoLog math((point.x - m_ptOrigin.x), (point.y - m_ptOrigin.y));
+			CoCDC dc(m_ptView, m_Screen);
+			dc.XDrawLine(m_perLine, m_linepro);
+			math.displayFcn(m_line, 1);
+			dc.XDrawLine(m_line, m_linepro);
+			m_perLine = m_line;
 			m_ptOrigin.x = point.x;
 			m_ptOrigin.y = point.y;
 		}
@@ -269,17 +269,17 @@ void CoMoveLine::MouseMove(UINT nFlags, CoPnt point)
 // //复制线
 //////////////////////////////////////////////////////////////////////////
 
-CoCopyLine::CoCopyLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen)
+CoCopyLine::CoCopyLine(CView* ptView, CoDB DB, CString ActiveTable, CoScreen Screen)
 {
 	m_ptView = ptView;
 	m_DB = DB;
 	m_ActiveTB = ActiveTable;
-	CoSelectLine obj(m_ptView,m_DB,m_ActiveTB,Screen,FALSE);
+	CoSelectLine obj(m_ptView, m_DB, m_ActiveTB, Screen, FALSE);
 	m_SelectLine = obj;
 	this->m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
 	{
-		m_line =m_perLine= m_SelectLine.m_Line;
+		m_line = m_perLine = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
 	}
 	m_bDraw = FALSE;
@@ -294,13 +294,13 @@ CoCopyLine::CoCopyLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen
 
 CoCopyLine::~CoCopyLine()
 {
-	
+
 }
 
 void CoCopyLine::LButtonDown(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonDown(nFlags,point);
+		m_SelectLine.LButtonDown(nFlags, point);
 	else
 	{
 		m_bDraw = TRUE;
@@ -311,16 +311,16 @@ void CoCopyLine::LButtonDown(UINT nFlags, CoPnt point)
 void CoCopyLine::LButtonUp(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonUp(nFlags,point);
+		m_SelectLine.LButtonUp(nFlags, point);
 	else
 	{
-		CoCDC dc(m_ptView,m_Screen);
-		dc.DrawLine(m_line,m_linepro);
+		CoCDC dc(m_ptView, m_Screen);
+		dc.DrawLine(m_line, m_linepro);
 		m_bDraw = FALSE;
-		CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+		CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 		CoFeatureset feature;
-		feature.Open(&conn,m_ActiveTB);
-		feature.LineAdd(m_line,m_linepro);
+		feature.Open(&conn, m_ActiveTB);
+		feature.LineAdd(m_line, m_linepro);
 		m_line.clear();
 		m_perLine.clear();
 		m_SelectLine.m_Selected = FALSE;
@@ -330,7 +330,7 @@ void CoCopyLine::LButtonUp(UINT nFlags, CoPnt point)
 	m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
 	{
-		m_line =m_perLine= m_SelectLine.m_Line;
+		m_line = m_perLine = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
 	}
 }
@@ -338,18 +338,18 @@ void CoCopyLine::LButtonUp(UINT nFlags, CoPnt point)
 void CoCopyLine::MouseMove(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.MouseMove(nFlags,point);
+		m_SelectLine.MouseMove(nFlags, point);
 	else
 	{
-		if(m_bDraw)
+		if (m_bDraw)
 		{
-			CoLog math((point.x-m_ptOrigin.x),(point.y-m_ptOrigin.y));
-			CoCDC dc(m_ptView,m_Screen);
-			if(index)
-				dc.XDrawLine(m_perLine,m_linepro);
+			CoLog math((point.x - m_ptOrigin.x), (point.y - m_ptOrigin.y));
+			CoCDC dc(m_ptView, m_Screen);
+			if (index)
+				dc.XDrawLine(m_perLine, m_linepro);
 			index++;
-			math.displayFcn(m_line,1);
-			dc.XDrawLine(m_line,m_linepro);
+			math.displayFcn(m_line, 1);
+			dc.XDrawLine(m_line, m_linepro);
 			m_perLine = m_line;
 			m_ptOrigin.x = point.x;
 			m_ptOrigin.y = point.y;
@@ -359,18 +359,18 @@ void CoCopyLine::MouseMove(UINT nFlags, CoPnt point)
 
 //////////////////////////////////////////////////////////////////////////
 
-CoCutLine::CoCutLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen)
+CoCutLine::CoCutLine(CView* ptView, CoDB DB, CString ActiveTable, CoScreen Screen)
 {
 	m_ptView = ptView;
 	m_DB = DB;
 	m_ActiveTB = ActiveTable;
-	CoSelectLine obj(m_ptView,m_DB,m_ActiveTB,Screen,FALSE);
+	CoSelectLine obj(m_ptView, m_DB, m_ActiveTB, Screen, FALSE);
 	m_SelectLine = obj;
 	this->m_Selected = m_SelectLine.m_Selected;
 
 	if (m_Selected)
 	{
-		m_line =m_perLine= m_SelectLine.m_Line;
+		m_line = m_perLine = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
 	}
 
@@ -383,26 +383,26 @@ CoCutLine::CoCutLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen)
 
 CoCutLine::~CoCutLine()
 {
-	
+
 }
 
 void CoCutLine::LButtonDown(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonDown(nFlags,point);
+		m_SelectLine.LButtonDown(nFlags, point);
 	else
 	{
 		vector<CoPnt>Line2;
 		CoLog math;
-		if (math.CutLine(point,m_line,Line2))
+		if (math.CutLine(point, m_line, Line2))
 		{
-			CoCDC dc(m_ptView,m_Screen);
+			CoCDC dc(m_ptView, m_Screen);
 			dc.DrawPoint(point);
-			CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+			CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 			CoFeatureset feature;
-			feature.Open(&conn,m_ActiveTB);
-			feature.LineUpdate(m_line,m_linepro);
-			feature.LineAdd(Line2,m_linepro);
+			feature.Open(&conn, m_ActiveTB);
+			feature.LineUpdate(m_line, m_linepro);
+			feature.LineAdd(Line2, m_linepro);
 			m_line.clear();
 			Line2.clear();
 			m_SelectLine.m_Selected = FALSE;
@@ -414,12 +414,12 @@ void CoCutLine::LButtonDown(UINT nFlags, CoPnt point)
 void CoCutLine::LButtonUp(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonUp(nFlags,point);
+		m_SelectLine.LButtonUp(nFlags, point);
 
 	m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
 	{
-		m_line =m_perLine= m_SelectLine.m_Line;
+		m_line = m_perLine = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
 	}
 }
@@ -427,22 +427,22 @@ void CoCutLine::LButtonUp(UINT nFlags, CoPnt point)
 void CoCutLine::MouseMove(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.MouseMove(nFlags,point);
+		m_SelectLine.MouseMove(nFlags, point);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-CoAddPntLine::CoAddPntLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen)
+CoAddPntLine::CoAddPntLine(CView* ptView, CoDB DB, CString ActiveTable, CoScreen Screen)
 {
 	m_ptView = ptView;
 	m_DB = DB;
 	m_ActiveTB = ActiveTable;
-	CoSelectLine obj(m_ptView,m_DB,m_ActiveTB,Screen,TRUE);
+	CoSelectLine obj(m_ptView, m_DB, m_ActiveTB, Screen, TRUE);
 	m_SelectLine = obj;
 	this->m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
 	{
-		m_line =m_perLine= m_SelectLine.m_Line;
+		m_line = m_perLine = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
 	}
 
@@ -451,30 +451,30 @@ CoAddPntLine::CoAddPntLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Sc
 	m_Screen.blc = Screen.blc;
 	m_Screen.wScreen = Screen.wScreen;
 	m_Screen.hScreen = Screen.hScreen;
-	
+
 }
 
 CoAddPntLine::~CoAddPntLine()
 {
-	
+
 }
 
 void CoAddPntLine::LButtonDown(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonDown(nFlags,point);
+		m_SelectLine.LButtonDown(nFlags, point);
 	else
 	{
 		vector<CoPnt>Line2;
 		CoLog math;
-		if (math.AddPntInLine(point,m_line))
+		if (math.AddPntInLine(point, m_line))
 		{
-			CoCDC dc(m_ptView,m_Screen);
+			CoCDC dc(m_ptView, m_Screen);
 			dc.DrawPoint(point);
-			CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+			CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 			CoFeatureset feature;
-			feature.Open(&conn,m_ActiveTB);
-			feature.LineUpdate(m_line,m_linepro);
+			feature.Open(&conn, m_ActiveTB);
+			feature.LineUpdate(m_line, m_linepro);
 			m_line.clear();
 			m_SelectLine.m_Selected = FALSE;
 		}
@@ -484,14 +484,14 @@ void CoAddPntLine::LButtonDown(UINT nFlags, CoPnt point)
 void CoAddPntLine::LButtonUp(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonUp(nFlags,point);
-	
+		m_SelectLine.LButtonUp(nFlags, point);
+
 	m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
 	{
-		m_line =m_perLine= m_SelectLine.m_Line;
+		m_line = m_perLine = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
-		CoCDC dc(m_ptView,m_Screen);
+		CoCDC dc(m_ptView, m_Screen);
 		dc.DrawPoint(m_line);
 	}
 }
@@ -499,22 +499,22 @@ void CoAddPntLine::LButtonUp(UINT nFlags, CoPnt point)
 void CoAddPntLine::MouseMove(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.MouseMove(nFlags,point);
+		m_SelectLine.MouseMove(nFlags, point);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-CoMovePntLine::CoMovePntLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen)
+CoMovePntLine::CoMovePntLine(CView* ptView, CoDB DB, CString ActiveTable, CoScreen Screen)
 {
 	m_ptView = ptView;
 	m_DB = DB;
 	m_ActiveTB = ActiveTable;
-	CoSelectLine obj(m_ptView,m_DB,m_ActiveTB,Screen,TRUE);
+	CoSelectLine obj(m_ptView, m_DB, m_ActiveTB, Screen, TRUE);
 	m_SelectLine = obj;
 	this->m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
 	{
-		m_line =m_perLine= m_SelectLine.m_Line;
+		m_line = m_perLine = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
 	}
 	m_bDraw = FALSE;
@@ -527,18 +527,18 @@ CoMovePntLine::CoMovePntLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen 
 	m_Screen.blc = Screen.blc;
 	m_Screen.wScreen = Screen.wScreen;
 	m_Screen.hScreen = Screen.hScreen;
-	
+
 }
 
 CoMovePntLine::~CoMovePntLine()
 {
-	
+
 }
 
 void CoMovePntLine::LButtonDown(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonDown(nFlags,point);
+		m_SelectLine.LButtonDown(nFlags, point);
 	else
 	{
 		/*vector<CoPnt>Line2;
@@ -551,24 +551,24 @@ void CoMovePntLine::LButtonDown(UINT nFlags, CoPnt point)
 			m_perPoint2 = m_line[m_Pos+1];
 		}*/
 		CoLog math;
-		m_Pos = math.GetPos(point,m_line);
-		if(m_Pos>=0)
+		m_Pos = math.GetPos(point, m_line);
+		if (m_Pos >= 0)
 		{
 			m_bDraw = TRUE;
-			if(m_Pos==0)
+			if (m_Pos == 0)
 			{
 				m_Double = FALSE;
-				m_perPoint1 = m_line[m_Pos+1];
+				m_perPoint1 = m_line[m_Pos + 1];
 			}
-			if(m_Pos==m_line.size()-1)
+			if (m_Pos == m_line.size() - 1)
 			{
 				m_Double = FALSE;
-				m_perPoint1 = m_line[m_Pos-1];
+				m_perPoint1 = m_line[m_Pos - 1];
 			}
-			if(m_Double)
+			if (m_Double)
 			{
-				m_perPoint1 = m_line[m_Pos-1];
-				m_perPoint2 = m_line[m_Pos+1];
+				m_perPoint1 = m_line[m_Pos - 1];
+				m_perPoint2 = m_line[m_Pos + 1];
 			}
 		}
 	}
@@ -577,17 +577,17 @@ void CoMovePntLine::LButtonDown(UINT nFlags, CoPnt point)
 void CoMovePntLine::LButtonUp(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonUp(nFlags,point);
-	
-	if(m_bDraw)
+		m_SelectLine.LButtonUp(nFlags, point);
+
+	if (m_bDraw)
 	{
 		//m_ptView->Invalidate(TRUE);
 		m_bDraw = FALSE;
 		m_line[m_Pos] = point;
-		CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+		CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 		CoFeatureset feature;
-		feature.Open(&conn,m_ActiveTB);
-		feature.LineUpdate(m_line,m_linepro);
+		feature.Open(&conn, m_ActiveTB);
+		feature.LineUpdate(m_line, m_linepro);
 		m_line.clear();
 		m_SelectLine.m_Selected = FALSE;
 		m_Double = TRUE;//+
@@ -596,16 +596,16 @@ void CoMovePntLine::LButtonUp(UINT nFlags, CoPnt point)
 	m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
 	{
-		m_line =m_perLine= m_SelectLine.m_Line;
+		m_line = m_perLine = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
 	}
 }
 
 void CoMovePntLine::MouseMove(UINT nFlags, CoPnt point)
 {
-	CoCDC dc(m_ptView,m_Screen);
+	CoCDC dc(m_ptView, m_Screen);
 	if (!m_Selected)
-		m_SelectLine.MouseMove(nFlags,point);
+		m_SelectLine.MouseMove(nFlags, point);
 	if (m_bDraw)
 	{
 		/*dc.XDrawLine(m_line[m_Pos-1],m_perPoint1,m_linepro);
@@ -613,27 +613,27 @@ void CoMovePntLine::MouseMove(UINT nFlags, CoPnt point)
 
 		dc.XDrawLine(m_line[m_Pos+1],m_perPoint2,m_linepro);
 		dc.XDrawLine(m_line[m_Pos+1],point,m_linepro);
-	
-		m_perPoint1 = m_perPoint2 = point;*/
-		if(m_Double)
-		{
-			dc.XDrawLine(m_line[m_Pos-1],m_perPoint1,m_linepro);
-			dc.XDrawLine(m_line[m_Pos-1],point,m_linepro);
 
-			dc.XDrawLine(m_line[m_Pos+1],m_perPoint2,m_linepro);
-			dc.XDrawLine(m_line[m_Pos+1],point,m_linepro);
+		m_perPoint1 = m_perPoint2 = point;*/
+		if (m_Double)
+		{
+			dc.XDrawLine(m_line[m_Pos - 1], m_perPoint1, m_linepro);
+			dc.XDrawLine(m_line[m_Pos - 1], point, m_linepro);
+
+			dc.XDrawLine(m_line[m_Pos + 1], m_perPoint2, m_linepro);
+			dc.XDrawLine(m_line[m_Pos + 1], point, m_linepro);
 		}
 		else
 		{
-			if(m_Pos==0)
+			if (m_Pos == 0)
 			{
-				dc.XDrawLine(m_line[m_Pos+1],m_perPoint1,m_linepro);
-				dc.XDrawLine(m_line[m_Pos+1],point,m_linepro);
+				dc.XDrawLine(m_line[m_Pos + 1], m_perPoint1, m_linepro);
+				dc.XDrawLine(m_line[m_Pos + 1], point, m_linepro);
 			}
 			else
 			{
-				dc.XDrawLine(m_line[m_Pos-1],m_perPoint1,m_linepro);
-				dc.XDrawLine(m_line[m_Pos-1],point,m_linepro);
+				dc.XDrawLine(m_line[m_Pos - 1], m_perPoint1, m_linepro);
+				dc.XDrawLine(m_line[m_Pos - 1], point, m_linepro);
 			}
 		}
 
@@ -643,12 +643,12 @@ void CoMovePntLine::MouseMove(UINT nFlags, CoPnt point)
 
 //////////////////////////////////////////////////////////////////////////
 
-CoDelPntLine::CoDelPntLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen)
+CoDelPntLine::CoDelPntLine(CView* ptView, CoDB DB, CString ActiveTable, CoScreen Screen)
 {
 	m_ptView = ptView;
 	m_DB = DB;
 	m_ActiveTB = ActiveTable;
-	CoSelectLine obj(m_ptView,m_DB,m_ActiveTB,Screen,TRUE);
+	CoSelectLine obj(m_ptView, m_DB, m_ActiveTB, Screen, TRUE);
 	m_SelectLine = obj;
 	this->m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
@@ -666,22 +666,22 @@ CoDelPntLine::CoDelPntLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Sc
 
 CoDelPntLine::~CoDelPntLine()
 {
-	
+
 }
 
 void CoDelPntLine::LButtonDown(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonDown(nFlags,point);
+		m_SelectLine.LButtonDown(nFlags, point);
 	else
 	{
 		CoLog math;
-		if (math.DeletePntLine(point,m_line))
+		if (math.DeletePntLine(point, m_line))
 		{
-			CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+			CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 			CoFeatureset feature;
-			feature.Open(&conn,m_ActiveTB);
-			feature.LineUpdate(m_line,m_linepro);
+			feature.Open(&conn, m_ActiveTB);
+			feature.LineUpdate(m_line, m_linepro);
 			m_line.clear();
 			m_SelectLine.m_Selected = FALSE;
 			m_ptView->Invalidate(TRUE);
@@ -692,7 +692,7 @@ void CoDelPntLine::LButtonDown(UINT nFlags, CoPnt point)
 void CoDelPntLine::LButtonUp(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonUp(nFlags,point);
+		m_SelectLine.LButtonUp(nFlags, point);
 	/*else
 		m_ptView->Invalidate(TRUE);*/
 	m_Selected = m_SelectLine.m_Selected;
@@ -706,17 +706,17 @@ void CoDelPntLine::LButtonUp(UINT nFlags, CoPnt point)
 void CoDelPntLine::MouseMove(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.MouseMove(nFlags,point);
+		m_SelectLine.MouseMove(nFlags, point);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-CoDeleteLine::CoDeleteLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen)
+CoDeleteLine::CoDeleteLine(CView* ptView, CoDB DB, CString ActiveTable, CoScreen Screen)
 {
 	m_ptView = ptView;
 	m_DB = DB;
 	m_ActiveTB = ActiveTable;
-	CoSelectLine obj(m_ptView,m_DB,m_ActiveTB,Screen,FALSE);
+	CoSelectLine obj(m_ptView, m_DB, m_ActiveTB, Screen, FALSE);
 	m_SelectLine = obj;
 	this->m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
@@ -727,10 +727,10 @@ CoDeleteLine::CoDeleteLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Sc
 		m_line = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
 
-		CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+		CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 		CoFeatureset feature;
-		feature.Open(&conn,m_ActiveTB);
-		if (MessageBox(m_ptView->m_hWnd,"删除后将无法恢复，确定删除吗？","警告",MB_YESNO | MB_ICONQUESTION)==IDYES)
+		feature.Open(&conn, m_ActiveTB);
+		if (MessageBox(m_ptView->m_hWnd, "删除后将无法恢复，确定删除吗？", "警告", MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
 			feature.LineDelete(m_linepro.LineID);
 			m_ptView->Invalidate(TRUE);
@@ -749,30 +749,30 @@ CoDeleteLine::CoDeleteLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Sc
 
 CoDeleteLine::~CoDeleteLine()
 {
-	
+
 }
 
 void CoDeleteLine::LButtonDown(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonDown(nFlags,point);
+		m_SelectLine.LButtonDown(nFlags, point);
 }
 
 void CoDeleteLine::LButtonUp(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonUp(nFlags,point);
-	
+		m_SelectLine.LButtonUp(nFlags, point);
+
 	m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
 	{
 		m_line = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
 
-		CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+		CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 		CoFeatureset feature;
-		feature.Open(&conn,m_ActiveTB);
-		if (MessageBox(m_ptView->m_hWnd,"删除后将无法恢复，确定删除吗？","警告",MB_YESNO | MB_ICONQUESTION)==IDYES)
+		feature.Open(&conn, m_ActiveTB);
+		if (MessageBox(m_ptView->m_hWnd, "删除后将无法恢复，确定删除吗？", "警告", MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
 			feature.LineDelete(m_linepro.LineID);
 			m_ptView->Invalidate(TRUE);
@@ -786,12 +786,12 @@ void CoDeleteLine::LButtonUp(UINT nFlags, CoPnt point)
 void CoDeleteLine::MouseMove(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.MouseMove(nFlags,point);
+		m_SelectLine.MouseMove(nFlags, point);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-CoDleAllLine::CoDleAllLine(CView* ptView,CoDB DB,CString ActiveTable)
+CoDleAllLine::CoDleAllLine(CView* ptView, CoDB DB, CString ActiveTable)
 {
 	m_ptView = ptView;
 	m_DB = DB;
@@ -806,10 +806,10 @@ CoDleAllLine::~CoDleAllLine()
 
 void CoDleAllLine::DeleteAllLine()
 {
-	CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+	CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 	CoFeatureset feature;
-	feature.Open(&conn,m_ActiveTB);
-	if (MessageBox(m_ptView->m_hWnd,"删除后将无法恢复，确定删除吗？","警告",MB_YESNO | MB_ICONQUESTION)==IDYES)
+	feature.Open(&conn, m_ActiveTB);
+	if (MessageBox(m_ptView->m_hWnd, "删除后将无法恢复，确定删除吗？", "警告", MB_YESNO | MB_ICONQUESTION) == IDYES)
 	{
 		feature.DeleteAll();
 	}
@@ -818,12 +818,12 @@ void CoDleAllLine::DeleteAllLine()
 
 //////////////////////////////////////////////////////////////////////////
 
-CoAlterLinePro::CoAlterLinePro(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen)
+CoAlterLinePro::CoAlterLinePro(CView* ptView, CoDB DB, CString ActiveTable, CoScreen Screen)
 {
 	m_ptView = ptView;
 	m_DB = DB;
 	m_ActiveTB = ActiveTable;
-	CoSelectLine obj(m_ptView,m_DB,m_ActiveTB,Screen,FALSE);
+	CoSelectLine obj(m_ptView, m_DB, m_ActiveTB, Screen, FALSE);
 	m_SelectLine = obj;
 	this->m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
@@ -833,14 +833,14 @@ CoAlterLinePro::CoAlterLinePro(CView* ptView,CoDB DB,CString ActiveTable,CoScree
 
 		m_line = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
-		CoCDC dc(m_ptView,m_Screen);
+		CoCDC dc(m_ptView, m_Screen);
 
 		if (LinePro(m_linepro))
 		{
-			CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+			CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 			CoFeatureset feature;
-			feature.Open(&conn,m_ActiveTB);
-			feature.LineUpdate(m_line,m_linepro);
+			feature.Open(&conn, m_ActiveTB);
+			feature.LineUpdate(m_line, m_linepro);
 			m_line.clear();
 			m_ptView->Invalidate(TRUE);
 		}
@@ -858,33 +858,33 @@ CoAlterLinePro::CoAlterLinePro(CView* ptView,CoDB DB,CString ActiveTable,CoScree
 
 CoAlterLinePro::~CoAlterLinePro()
 {
-	
+
 }
 
 void CoAlterLinePro::LButtonDown(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonDown(nFlags,point);
+		m_SelectLine.LButtonDown(nFlags, point);
 }
 
 void CoAlterLinePro::LButtonUp(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonUp(nFlags,point);
-	
+		m_SelectLine.LButtonUp(nFlags, point);
+
 	m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
 	{
 		m_line = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
-		CoCDC dc(m_ptView,m_Screen);
+		CoCDC dc(m_ptView, m_Screen);
 
 		if (LinePro(m_linepro))
 		{
-			CoConnect conn(m_DB.szDsn,m_DB.szName,m_DB.szPassword);
+			CoConnect conn(m_DB.szDsn, m_DB.szName, m_DB.szPassword);
 			CoFeatureset feature;
-			feature.Open(&conn,m_ActiveTB);
-			feature.LineUpdate(m_line,m_linepro);
+			feature.Open(&conn, m_ActiveTB);
+			feature.LineUpdate(m_line, m_linepro);
 			m_line.clear();
 			m_ptView->Invalidate(TRUE);
 		}
@@ -896,13 +896,13 @@ void CoAlterLinePro::LButtonUp(UINT nFlags, CoPnt point)
 void CoAlterLinePro::MouseMove(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.MouseMove(nFlags,point);
+		m_SelectLine.MouseMove(nFlags, point);
 }
 //自定义量算
-CoDistance::CoDistance(CView* ptView,CoScreen Screen)
+CoDistance::CoDistance(CView* ptView, CoScreen Screen)
 {
 	m_ptView = ptView;
-	m_LinePro.LineColor = RGB(0,0,0);
+	m_LinePro.LineColor = RGB(0, 0, 0);
 	m_LinePro.LineStyle = 0;
 	m_LinePro.LineWidth = 1;
 	m_bDraw = FALSE;
@@ -922,7 +922,7 @@ CoDistance::~CoDistance()
 void CoDistance::LButtonDown(UINT nFlags, CoPnt point)
 {
 	m_bDraw = TRUE;
-	m_PerPoint = m_PtOrigin=point;
+	m_PerPoint = m_PtOrigin = point;
 	m_Line.push_back(point);
 }
 
@@ -930,11 +930,11 @@ void CoDistance::LButtonDown(UINT nFlags, CoPnt point)
 void CoDistance::MouseMove(UINT nFlags, CoPnt point)
 {
 	//橡皮线
-	CoCDC dc(m_ptView,m_Screen);
+	CoCDC dc(m_ptView, m_Screen);
 	if (m_bDraw)
 	{
-		dc.XDrawLine(m_PtOrigin,m_PerPoint,m_LinePro);
-		dc.XDrawLine(m_PtOrigin,point,m_LinePro);
+		dc.XDrawLine(m_PtOrigin, m_PerPoint, m_LinePro);
+		dc.XDrawLine(m_PtOrigin, point, m_LinePro);
 		m_PerPoint = point;
 	}
 
@@ -943,22 +943,22 @@ void CoDistance::RButtonDown(UINT nFlags, CoPnt point)
 {
 	m_bDraw = FALSE;
 	CoLog tMath;
-	double dis=tMath.DistanceLine(m_Line);
+	double dis = tMath.DistanceLine(m_Line);
 	CString str;
-	str.Format("%f mm",dis);
-	MessageBox(m_ptView->m_hWnd,str,"两点距离",MB_OK);
+	str.Format("%f mm", dis);
+	MessageBox(m_ptView->m_hWnd, str, "两点距离", MB_OK);
 	m_ptView->Invalidate(TRUE);
 	m_Line.clear();
 }
 
 //已知直线量算
-CoDistanceLine::CoDistanceLine(CView* ptView,CoDB DB,CString ActiveTable,CoScreen Screen)
+CoDistanceLine::CoDistanceLine(CView* ptView, CoDB DB, CString ActiveTable, CoScreen Screen)
 {
 	m_ptView = ptView;
-	m_LinePro.LineColor = RGB(0,0,0);
+	m_LinePro.LineColor = RGB(0, 0, 0);
 	m_LinePro.LineStyle = 0;
 	m_LinePro.LineWidth = 1;
-	CoSelectLine obj(m_ptView,DB,ActiveTable,Screen,FALSE);
+	CoSelectLine obj(m_ptView, DB, ActiveTable, Screen, FALSE);
 	m_SelectLine = obj;
 	this->m_Selected = m_SelectLine.m_Selected;
 
@@ -977,7 +977,7 @@ CoDistanceLine::~CoDistanceLine()
 void CoDistanceLine::LButtonDown(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonDown(nFlags,point);
+		m_SelectLine.LButtonDown(nFlags, point);
 	else
 	{
 		m_bDraw = TRUE;
@@ -988,7 +988,7 @@ void CoDistanceLine::LButtonDown(UINT nFlags, CoPnt point)
 void CoDistanceLine::LButtonUp(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.LButtonUp(nFlags,point);
+		m_SelectLine.LButtonUp(nFlags, point);
 
 	m_Selected = m_SelectLine.m_Selected;
 	if (m_Selected)
@@ -996,10 +996,10 @@ void CoDistanceLine::LButtonUp(UINT nFlags, CoPnt point)
 		m_line = m_SelectLine.m_Line;
 		m_linepro = m_SelectLine.m_LinePro;
 		CoLog tMath;
-		double dis=tMath.DistanceLine(m_line);
+		double dis = tMath.DistanceLine(m_line);
 		CString str;
-		str.Format("%f mm",dis);
-		MessageBox(m_ptView->m_hWnd,str,"两点距离",MB_OK);
+		str.Format("%f mm", dis);
+		MessageBox(m_ptView->m_hWnd, str, "两点距离", MB_OK);
 		m_Selected = FALSE;
 		m_SelectLine.m_Selected = FALSE;
 	}
@@ -1008,5 +1008,5 @@ void CoDistanceLine::LButtonUp(UINT nFlags, CoPnt point)
 void CoDistanceLine::MouseMove(UINT nFlags, CoPnt point)
 {
 	if (!m_Selected)
-		m_SelectLine.MouseMove(nFlags,point);
+		m_SelectLine.MouseMove(nFlags, point);
 }

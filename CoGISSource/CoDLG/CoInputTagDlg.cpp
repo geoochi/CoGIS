@@ -20,7 +20,7 @@ CoInputTagDlg::CoInputTagDlg(CWnd* pParent /*=NULL*/)
 	m_textangle = 0;
 	m_tagfont = _T("华文楷体");
 	m_tagwidth = 10;
-	m_tagcolor=RGB(0,0,0);
+	m_tagcolor = RGB(0, 0, 0);
 }
 
 CoInputTagDlg::~CoInputTagDlg()
@@ -58,7 +58,7 @@ void CoInputTagDlg::OnBnClickedColor()
 	// TODO: 在此添加控件通知处理程序代码
 	CColorDialog dlg;
 	dlg.DoModal();
-	m_tagcolor=dlg.GetColor();
+	m_tagcolor = dlg.GetColor();
 }
 
 
@@ -66,8 +66,8 @@ void CoInputTagDlg::OnOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	int index;
-	index=m_font.GetCurSel();
-	m_font.GetLBText(index,m_tagfont);
+	index = m_font.GetCurSel();
+	m_font.GetLBText(index, m_tagfont);
 	CDialog::OnOK();
 }
 
@@ -79,9 +79,9 @@ BOOL CoInputTagDlg::OnInitDialog()
 	// TODO:  在此添加额外的初始化
 
 	//添加背景
-	CBitmap bmp; 
-	bmp.LoadBitmap(IDB_BITMAP_Background); 
-	m_brBk.CreatePatternBrush(&bmp); 
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BITMAP_Background);
+	m_brBk.CreatePatternBrush(&bmp);
 	bmp.DeleteObject();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -94,9 +94,9 @@ HBRUSH CoInputTagDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  在此更改 DC 的任何特性
-	if (pWnd == this) 
-	{ 
-		return m_brBk; 
+	if (pWnd == this)
+	{
+		return m_brBk;
 	}
 	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
 	return hbr;

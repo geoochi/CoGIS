@@ -16,17 +16,17 @@ CoPolyProDLG::CoPolyProDLG(CWnd* pParent /*=NULL*/)
 
 }
 
-CoPolyProDLG::CoPolyProDLG(CoPolyPro& PolyPro,CString PolyStyle,CString FillStyle,CWnd* pParent /* = NULL */)
+CoPolyProDLG::CoPolyProDLG(CoPolyPro& PolyPro, CString PolyStyle, CString FillStyle, CWnd* pParent /* = NULL */)
 	: CDialog(CoPolyProDLG::IDD, pParent)
 {
 	m_PolyStyle = PolyPro.PolyStyle;
 	m_FillStyle = PolyPro.PolyFillStyle;
 	m_OrStyle = PolyStyle;
 	m_OrFillStyle = FillStyle;
-	m_FillCor=m_OrFillCor = PolyPro.PolyColor;
+	m_FillCor = m_OrFillCor = PolyPro.PolyColor;
 	m_Layer = m_OrLayer = PolyPro.PolyLayer;
-	m_Area =m_OrArea = PolyPro.PolyArea;
-	Tug1 = Tug2 = Tug3 = Tug4 =	Tug5= FALSE;
+	m_Area = m_OrArea = PolyPro.PolyArea;
+	Tug1 = Tug2 = Tug3 = Tug4 = Tug5 = FALSE;
 }
 
 
@@ -75,9 +75,9 @@ BOOL CoPolyProDLG::OnInitDialog()
 	GetDlgItem(IDC_EDIT7)->EnableWindow(FALSE);
 
 	//添加背景
-	CBitmap bmp; 
-	bmp.LoadBitmap(IDB_BITMAP_Background); 
-	m_brBk.CreatePatternBrush(&bmp); 
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BITMAP_Background);
+	m_brBk.CreatePatternBrush(&bmp);
 	bmp.DeleteObject();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -100,7 +100,7 @@ void CoPolyProDLG::OnBnClickedCheck1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug1)
+	if (Tug1)
 	{
 		GetDlgItem(IDC_COMBO1)->EnableWindow(FALSE);
 		Tug1 = false;
@@ -118,7 +118,7 @@ void CoPolyProDLG::OnBnClickedCheck2()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug2)
+	if (Tug2)
 	{
 		GetDlgItem(IDC_COMBO2)->EnableWindow(FALSE);
 		Tug1 = false;
@@ -136,7 +136,7 @@ void CoPolyProDLG::OnBnClickedCheck3()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug3)
+	if (Tug3)
 	{
 		GetDlgItem(IDC_BUTTON1)->EnableWindow(FALSE);
 		Tug3 = false;
@@ -154,7 +154,7 @@ void CoPolyProDLG::OnBnClickedCheck5()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug5)
+	if (Tug5)
 	{
 		GetDlgItem(IDC_EDIT7)->EnableWindow(FALSE);
 		Tug5 = TRUE;
@@ -172,7 +172,7 @@ void CoPolyProDLG::OnBnClickedCheck4()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug4)
+	if (Tug4)
 	{
 		GetDlgItem(IDC_EDIT5)->EnableWindow(FALSE);
 		Tug4 = TRUE;
@@ -191,9 +191,9 @@ HBRUSH CoPolyProDLG::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  在此更改 DC 的任何特性
-	if (pWnd == this) 
-	{ 
-		return m_brBk; 
+	if (pWnd == this)
+	{
+		return m_brBk;
 	}
 	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
 	return hbr;

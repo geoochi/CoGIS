@@ -60,11 +60,11 @@ bool DIALOG AlterTagProDLG(CoTagPro& TagPro);
 
 bool DIALOG AlterTagStr(CString& TagStr);
 
- #ifndef _CoDLG_EXPORT_
-   #ifdef _DEBUG
-  #pragma comment(lib,"CoDLG.lib")
+#ifndef _CoDLG_EXPORT_
+#ifdef _DEBUG
+#pragma comment(lib,"CoDLG.lib")
 #else
-  #pragma comment(lib,"CoDLG.lib")
-  #endif
- #endif
+#pragma comment(lib,"CoDLG.lib")
+#endif
+#endif
 #endif

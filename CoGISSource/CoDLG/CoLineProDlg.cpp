@@ -16,10 +16,10 @@ CoLineProDlg::CoLineProDlg(CWnd* pParent /*=NULL*/)
 
 }
 
-CoLineProDlg::CoLineProDlg(int MyStyle,CString LineStyle,int LineWide,int LineCor,int LineLayle,CWnd* pParent /*=NULL*/)
+CoLineProDlg::CoLineProDlg(int MyStyle, CString LineStyle, int LineWide, int LineCor, int LineLayle, CWnd* pParent /*=NULL*/)
 	: CDialog(CoLineProDlg::IDD, pParent)
 {
-	m_LineStyle=MyStyle;
+	m_LineStyle = MyStyle;
 	m_EditLineStyle = LineStyle;
 
 	m_EditWide = m_EditLineWide = LineWide;
@@ -77,9 +77,9 @@ BOOL CoLineProDlg::OnInitDialog()
 	GetDlgItem(IDC_EDIT6)->EnableWindow(FALSE);
 
 	//添加背景
-	CBitmap bmp; 
-	bmp.LoadBitmap(IDB_BITMAP_Background); 
-	m_brBk.CreatePatternBrush(&bmp); 
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BITMAP_Background);
+	m_brBk.CreatePatternBrush(&bmp);
 	bmp.DeleteObject();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -91,7 +91,7 @@ void CoLineProDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	CColorDialog corDlg;
-	if (corDlg.DoModal()==IDOK)
+	if (corDlg.DoModal() == IDOK)
 	{
 		m_LineCor = corDlg.GetColor();
 	}
@@ -102,7 +102,7 @@ void CoLineProDlg::OnBnClickedCheck1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug1)
+	if (Tug1)
 	{
 		GetDlgItem(IDC_COMBO1)->EnableWindow(FALSE);
 		Tug1 = false;
@@ -121,7 +121,7 @@ void CoLineProDlg::OnBnClickedCheck2()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug2)
+	if (Tug2)
 	{
 		GetDlgItem(IDC_EDIT5)->EnableWindow(FALSE);
 		Tug2 = false;
@@ -139,7 +139,7 @@ void CoLineProDlg::OnBnClickedCheck3()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug3)
+	if (Tug3)
 	{
 		GetDlgItem(IDC_BUTTON1)->EnableWindow(FALSE);
 		Tug3 = false;
@@ -157,7 +157,7 @@ void CoLineProDlg::OnBnClickedCheck4()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug4)
+	if (Tug4)
 	{
 		GetDlgItem(IDC_EDIT6)->EnableWindow(FALSE);
 		Tug4 = false;
@@ -176,9 +176,9 @@ HBRUSH CoLineProDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  在此更改 DC 的任何特性
-	if (pWnd == this) 
-	{ 
-		return m_brBk; 
+	if (pWnd == this)
+	{
+		return m_brBk;
 	}
 
 	// TODO:  如果默认的不是所需画笔，则返回另一个画笔

@@ -12,7 +12,7 @@ public:
 	CoInputPntDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CoInputPntDlg();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_INPUTPNT };
 
 protected:

@@ -9,10 +9,10 @@ class CoAlterTagPro : public CDialog
 
 public:
 	CoAlterTagPro(CWnd* pParent = NULL);   // 标准构造函数
-	CoAlterTagPro(CoTagPro& TagPro,CWnd* pParent = NULL); 
+	CoAlterTagPro(CoTagPro& TagPro, CWnd* pParent = NULL);
 	virtual ~CoAlterTagPro();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_MICALTER_TAGPRO };
 public:
 	CBrush m_brBk;//定义一个背景画刷

@@ -11,7 +11,7 @@ public:
 	CoInputTagDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CoInputTagDlg();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_INPUTTAG };
 public:
 	CBrush m_brBk;//定义一个背景画刷

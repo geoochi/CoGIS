@@ -9,10 +9,10 @@ class CoPntPorDlg : public CDialog
 
 public:
 	CoPntPorDlg(CWnd* pParent = NULL);   // 标准构造函数
-	CoPntPorDlg(int Style,CString PntStyle,int Raido,int PntCor,int PntLayer,CWnd* pParent = NULL);
+	CoPntPorDlg(int Style, CString PntStyle, int Raido, int PntCor, int PntLayer, CWnd* pParent = NULL);
 	virtual ~CoPntPorDlg();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_POINTPRO };
 	CBrush m_brBk;//定义一个背景画刷
 	CComboBox	m_CorPntStyle;

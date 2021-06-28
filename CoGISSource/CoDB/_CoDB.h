@@ -14,14 +14,14 @@ using namespace ADOBS;
 #include "Draw.h"
 CoDBOper extern CString DBIP;
 CoDBOper extern CString workpath;
-class  CoDBOper CoConnect 
+class  CoDBOper CoConnect
 {
 public:
 	CoConnect();
-	CoConnect(CString szDsn,CString szName,CString szPwd);
+	CoConnect(CString szDsn, CString szName, CString szPwd);
 	virtual ~CoConnect();
 	//数据库的链接与断开
-	long Connect(CString szDsn,CString szName,CString szPwd);
+	long Connect(CString szDsn, CString szName, CString szPwd);
 	long Connect();
 	long DisConncet();
 	long IsConnceted();
@@ -48,13 +48,13 @@ public:
 //
 //==================================================
 
-class CoDBOper CoFeatureset  
+class CoDBOper CoFeatureset
 {
 public:
 	CoFeatureset();
 	virtual ~CoFeatureset();
 public:
-	long Open(CoConnect* pt,CString& name);
+	long Open(CoConnect* pt, CString& name);
 	long Close();
 	long IsOpen();
 
@@ -64,9 +64,9 @@ public:
 	long GteCount();
 
 	//按照空间坐标得到符合的ID系列
-	int GetAllID(CoRect& rc,vector<long>&ID);
+	int GetAllID(CoRect& rc, vector<long>& ID);
 	//按照属性值得到符合的ID系列
-	int GetAllID(CString& ptSQL,vector<long>&ID);
+	int GetAllID(CString& ptSQL, vector<long>& ID);
 
 	long GetID(CString Item);
 
@@ -77,30 +77,30 @@ public:
 	void SaveFileMy();
 
 	//把文件存入数据库
-	long SaveFileToDB(CString FilePathName,long ID);
-	long CoSaveFileToDB(CString FilePathName,long ID);
-	long ReadDBToFile(vector<CoPnt>& Point,long ID);
+	long SaveFileToDB(CString FilePathName, long ID);
+	long CoSaveFileToDB(CString FilePathName, long ID);
+	long ReadDBToFile(vector<CoPnt>& Point, long ID);
 	void AddFileToTree(vector<CString>& Item);
-	long PointAdd(CoPnt Point,CoPntPro PointPro);
+	long PointAdd(CoPnt Point, CoPntPro PointPro);
 	long PointDelete(long ID);
-	long PointUpdate(CoPnt& Point,CoPntPro& PntPro);
-	long PointGet(CoPnt& Point,CoPntPro& PntPro);
-	long TagAdd(CoPnt Point,CoTagPro& TagPro);
+	long PointUpdate(CoPnt& Point, CoPntPro& PntPro);
+	long PointGet(CoPnt& Point, CoPntPro& PntPro);
+	long TagAdd(CoPnt Point, CoTagPro& TagPro);
 	long TagDelete(long ID);
-	long TagUpdate(CoPnt& point,CoTagPro& TagPro);
-	long TagGet(CoPnt& Point,CoTagPro& TagPro);
-	long LineAdd(vector<CoPnt>& LinePnts,CoLinePro& linepro);
+	long TagUpdate(CoPnt& point, CoTagPro& TagPro);
+	long TagGet(CoPnt& Point, CoTagPro& TagPro);
+	long LineAdd(vector<CoPnt>& LinePnts, CoLinePro& linepro);
 	long LineDelete(long ID);
-	long LineUpdate(vector<CoPnt>& Line,CoLinePro& LinePro);
-	long LineGet(vector<CoPnt>& Line,CoLinePro& LinePro);	
-	long PolygonAdd(vector<CoPnt>& PlyPnt,CoPolyPro& PlyPro);
+	long LineUpdate(vector<CoPnt>& Line, CoLinePro& LinePro);
+	long LineGet(vector<CoPnt>& Line, CoLinePro& LinePro);
+	long PolygonAdd(vector<CoPnt>& PlyPnt, CoPolyPro& PlyPro);
 	long PolygonDelete(long ID);
-	long PolygonUpdate(vector<CoPnt>&Poly,CoPolyPro& PolyPro);
-	long PolygonGet(vector<CoPnt>& Poly,CoPolyPro& Polypro);
+	long PolygonUpdate(vector<CoPnt>& Poly, CoPolyPro& PolyPro);
+	long PolygonGet(vector<CoPnt>& Poly, CoPolyPro& Polypro);
 	bool DeleteAll();
 	long CloseItem(CString ItemName);
 	long OpenItem(CString ItemName);
-	long GetRect(int ID,CoRect& rc);
+	long GetRect(int ID, CoRect& rc);
 public:
 	CoConnect	m_giscon;
 	CString m_tablename;
@@ -116,33 +116,33 @@ public:
 //
 //=====================================================
 
-class CoDBOper CoRecorset  
+class CoDBOper CoRecorset
 {
 public:
 	CoRecorset();
 	~CoRecorset();
-public:	
-	long Open(CoFeatureset *pt,CString& PtSQL);
-	long Open(CoFeatureset *pt,CoRect& rc);
+public:
+	long Open(CoFeatureset* pt, CString& PtSQL);
+	long Open(CoFeatureset* pt, CoRect& rc);
 	long Close();
-	
+
 	void MoveNext();
 	void MoveLast();
 	void MoveFirst();
 	bool CoEOF();
 
-	long GetPoint(CoPnt& Point,CoPntPro& PntPro);
+	long GetPoint(CoPnt& Point, CoPntPro& PntPro);
 	//--------------------------------------------
-	long GetTag(CoPnt& Point,CoTagPro& TagPro);
+	long GetTag(CoPnt& Point, CoTagPro& TagPro);
 	//--------------------------------------------
-	long GetLine(vector<CoPnt>& Line,CoLinePro& LinePro);
-	long GetPolygon(vector<CoPnt>& Poly,CoPolyPro& PolyPro);
+	long GetLine(vector<CoPnt>& Line, CoLinePro& LinePro);
+	long GetPolygon(vector<CoPnt>& Poly, CoPolyPro& PolyPro);
 
 private:
 	long CoOpen();
 
 private:
-	CoFeatureset *m_File;
+	CoFeatureset* m_File;
 	CoRect m_ptRect;
 	CString m_ptSQL;
 	int m_IDNum;

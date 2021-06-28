@@ -41,9 +41,9 @@ BOOL CoNewPolyDlg::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化
 	//添加背景
-	CBitmap bmp; 
-	bmp.LoadBitmap(IDB_BITMAP_Background); 
-	m_brBk.CreatePatternBrush(&bmp); 
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BITMAP_Background);
+	m_brBk.CreatePatternBrush(&bmp);
 	bmp.DeleteObject();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -56,9 +56,9 @@ HBRUSH CoNewPolyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  在此更改 DC 的任何特性
-	if (pWnd == this) 
-	{ 
-		return m_brBk; 
+	if (pWnd == this)
+	{
+		return m_brBk;
 	}
 
 	// TODO:  如果默认的不是所需画笔，则返回另一个画笔

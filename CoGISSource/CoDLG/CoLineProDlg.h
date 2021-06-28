@@ -9,10 +9,10 @@ class CoLineProDlg : public CDialog
 
 public:
 	CoLineProDlg(CWnd* pParent = NULL);   // 标准构造函数
-	CoLineProDlg(int MyStyle,CString LineStyle,int LineWide,int LineCor,int LineLayle,CWnd* pParent = NULL);
+	CoLineProDlg(int MyStyle, CString LineStyle, int LineWide, int LineCor, int LineLayle, CWnd* pParent = NULL);
 	virtual ~CoLineProDlg();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_LINEPRO };
 public:
 	CBrush m_brBk;//定义一个背景画刷

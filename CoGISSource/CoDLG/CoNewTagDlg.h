@@ -11,7 +11,7 @@ public:
 	CoNewTagDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CoNewTagDlg();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_NEWFONTITEM };
 	CBrush m_brBk;//定义一个背景画刷
 	CString	m_TagName;

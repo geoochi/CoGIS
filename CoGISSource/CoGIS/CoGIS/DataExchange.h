@@ -18,9 +18,9 @@ CString getAreaAct();//得到激活的区文件
 bool isNoteActive();//如果有激活的注释文件
 CString getNoteAct();//得到激活的注释文件
 void GetConnect(CoConnect& conn);//连接数据库
-void AddTables(CString temItem,bool isopen,bool isactive,CString filetype);//增加当前工程的表
+void AddTables(CString temItem, bool isopen, bool isactive, CString filetype);//增加当前工程的表
 void setOpenMark(CString temItem);//设置打开标记
 void setCloseMark(CString temItem);//设置关闭标记
-bool setActiveMark(CString temItem,CString&reItem);//设置激活标记
+bool setActiveMark(CString temItem, CString& reItem);//设置激活标记
 void remItemMark(CString temItem);//删除一条记录
 #endif

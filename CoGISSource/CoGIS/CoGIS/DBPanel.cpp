@@ -8,7 +8,7 @@
 #include "_CoDLG.h"//对话框头文件
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif
 /////////////////////////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ BEGIN_MESSAGE_MAP(CDBView, CDockablePane)
 	ON_COMMAND(ID_CLOSE_ITEM, OnCloseItem)//关闭文件
 	ON_COMMAND(ID_ITEM_ACITIVE, OnActiveItem)//激活文件
 	ON_COMMAND(ID_DEL_ITEM, OnDelItem)//删除文件
-	ON_COMMAND(ID_Load_DB,OnLoadDB)//从数据库载入文件
+	ON_COMMAND(ID_Load_DB, OnLoadDB)//从数据库载入文件
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -49,7 +49,7 @@ int CDBView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	rectDummy.SetRectEmpty();
 
 	// 创建视图:
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE |TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS;
+	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS;
 
 	if (!m_wndFileView.Create(dwViewStyle, rectDummy, this, 4))
 	{
@@ -91,7 +91,7 @@ void CDBView::OnSize(UINT nType, int cx, int cy)
 //默认静态文件
 void CDBView::FillDBTCView()
 {
-    hRoot = m_wndFileView.InsertItem(_T("默认工程"), 0, 0);
+	hRoot = m_wndFileView.InsertItem(_T("默认工程"), 0, 0);
 	/*m_wndFileView.InsertItem(_T("默认点文件.cp"), 1, 1, hRoot);
 	m_wndFileView.InsertItem(_T("默认线文件.cl"), 2, 2, hRoot);
 	m_wndFileView.InsertItem(_T("默认区文件.ca"), 3, 3, hRoot);
@@ -102,7 +102,7 @@ void CDBView::FillDBTCView()
 //右键响应菜单
 void CDBView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-	CTreeCtrl* pWndTree = (CTreeCtrl*) &m_wndFileView;
+	CTreeCtrl* pWndTree = (CTreeCtrl*)&m_wndFileView;
 	ASSERT_VALID(pWndTree);
 
 	if (pWnd != pWndTree)
@@ -124,20 +124,20 @@ void CDBView::OnContextMenu(CWnd* pWnd, CPoint point)
 			pWndTree->SelectItem(hTreeItem);
 		}
 	}
-	tempItem=hTreeItem;
+	tempItem = hTreeItem;
 	pWndTree->SetFocus();
 	CMenu menu;
-	CString str=m_wndFileView.GetItemText(hTreeItem);
+	CString str = m_wndFileView.GetItemText(hTreeItem);
 
-	if((str!="默认工程")&&(hTreeItem!=NULL))
+	if ((str != "默认工程") && (hTreeItem != NULL))
 	{
 		menu.LoadMenu(IDR_AITER);
 		//m_DelItem = hItem; 
 	}
 	else
 		menu.LoadMenu(IDR_MENU_NEW);
-	CMenu *pPopup=menu.GetSubMenu(0);
-	pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON,point.x,point.y,this);
+	CMenu* pPopup = menu.GetSubMenu(0);
+	pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
 }
 
 void CDBView::AdjustLayout()
@@ -211,7 +211,7 @@ void CDBView::OnNewPnt()
 {
 	//AfxMessageBox(_T("新建点文件"));
 	/*setTemp(2);
-	CMainFrame*   pMainFrm   =   (CMainFrame*)AfxGetMainWnd(); 
+	CMainFrame*   pMainFrm   =   (CMainFrame*)AfxGetMainWnd();
 	pMainFrm-> GetActiveView()->Invalidate(TRUE);*/
 	//CCoGISView *p=(CCoGISView*)(this->GetActiveWindow());
 	CoConnect conn;
@@ -219,14 +219,14 @@ void CDBView::OnNewPnt()
 	CoFeatureset DBFeatureset;
 	if (NewPointDoc(&m_ProjectItem))
 	{
-		m_ProjectItem = m_ProjectItem+_T(".COP");
-		if (DBFeatureset.Open(&conn,m_ProjectItem))
+		m_ProjectItem = m_ProjectItem + _T(".COP");
+		if (DBFeatureset.Open(&conn, m_ProjectItem))
 		{
-			if(DBFeatureset.NewTable(1))
+			if (DBFeatureset.NewTable(1))
 			{
-				HTREEITEM NewItem=m_wndFileView.InsertItem(m_ProjectItem, 1, 1, hRoot);
-				AddTables(m_ProjectItem,false,false,_T("COP"));
-				m_wndFileView.SetItemColor(NewItem,RGB(128,128,128));
+				HTREEITEM NewItem = m_wndFileView.InsertItem(m_ProjectItem, 1, 1, hRoot);
+				AddTables(m_ProjectItem, false, false, _T("COP"));
+				m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
 			}
 		}
 	}
@@ -240,14 +240,14 @@ void CDBView::OnNewLine()
 	CoFeatureset DBFeatureset;
 	if (NewLineDoc(&m_ProjectItem))
 	{
-		m_ProjectItem = m_ProjectItem+_T(".COL");
-		if (DBFeatureset.Open(&conn,m_ProjectItem))
+		m_ProjectItem = m_ProjectItem + _T(".COL");
+		if (DBFeatureset.Open(&conn, m_ProjectItem))
 		{
-			if(DBFeatureset.NewTable(2))
+			if (DBFeatureset.NewTable(2))
 			{
-				HTREEITEM NewItem=m_wndFileView.InsertItem(m_ProjectItem, 2, 2, hRoot);
-				AddTables(m_ProjectItem,false,false,_T("COL"));
-				m_wndFileView.SetItemColor(NewItem,RGB(128,128,128));
+				HTREEITEM NewItem = m_wndFileView.InsertItem(m_ProjectItem, 2, 2, hRoot);
+				AddTables(m_ProjectItem, false, false, _T("COL"));
+				m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
 			}
 		}
 	}
@@ -261,14 +261,14 @@ void CDBView::OnNewArea()
 	CoFeatureset DBFeatureset;
 	if (NewPolyDoc(&m_ProjectItem))
 	{
-		m_ProjectItem = m_ProjectItem+_T(".COA");
-		if (DBFeatureset.Open(&conn,m_ProjectItem))
+		m_ProjectItem = m_ProjectItem + _T(".COA");
+		if (DBFeatureset.Open(&conn, m_ProjectItem))
 		{
-			if(DBFeatureset.NewTable(3))
+			if (DBFeatureset.NewTable(3))
 			{
-				HTREEITEM NewItem=m_wndFileView.InsertItem(m_ProjectItem, 3, 3, hRoot);
-				AddTables(m_ProjectItem,false,false,_T("COA"));
-				m_wndFileView.SetItemColor(NewItem,RGB(128,128,128));
+				HTREEITEM NewItem = m_wndFileView.InsertItem(m_ProjectItem, 3, 3, hRoot);
+				AddTables(m_ProjectItem, false, false, _T("COA"));
+				m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
 			}
 		}
 	}
@@ -282,14 +282,14 @@ void CDBView::OnNewNote()
 	CoFeatureset DBFeatureset;
 	if (NewTagDoc(&m_ProjectItem))
 	{
-		m_ProjectItem = m_ProjectItem+".CON";
-		if (DBFeatureset.Open(&conn,m_ProjectItem))
+		m_ProjectItem = m_ProjectItem + ".CON";
+		if (DBFeatureset.Open(&conn, m_ProjectItem))
 		{
-			if(DBFeatureset.NewTable(4))
+			if (DBFeatureset.NewTable(4))
 			{
-				HTREEITEM NewItem=m_wndFileView.InsertItem(m_ProjectItem, 4, 4, hRoot);
-				AddTables(m_ProjectItem,false,false,_T("CON"));
-				m_wndFileView.SetItemColor(NewItem,RGB(128,128,128));
+				HTREEITEM NewItem = m_wndFileView.InsertItem(m_ProjectItem, 4, 4, hRoot);
+				AddTables(m_ProjectItem, false, false, _T("CON"));
+				m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
 			}
 		}
 	}
@@ -300,75 +300,75 @@ void CDBView::OnLoadDB()
 {
 	CString filename;
 
-	CFileDialog fileDialog(TRUE,_T("点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON"),
-		NULL,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,_T( "点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON||"));
-	if(fileDialog.DoModal()==IDOK)
+	CFileDialog fileDialog(TRUE, _T("点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON"),
+		NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON||"));
+	if (fileDialog.DoModal() == IDOK)
 	{
-		filename=fileDialog.GetFileName();
+		filename = fileDialog.GetFileName();
 		//如果是点文件
-		if (fileDialog.GetFileExt()==_T("COP"))
+		if (fileDialog.GetFileExt() == _T("COP"))
 		{
 			CoConnect conn;
 			GetConnect(conn);
 			CoFeatureset DBFeatureset;
-			if (DBFeatureset.Open(&conn,filename))
+			if (DBFeatureset.Open(&conn, filename))
 			{
-				if(DBFeatureset.NewTable(1))
+				if (DBFeatureset.NewTable(1))
 				{
-					HTREEITEM NewItem=m_wndFileView.InsertItem(filename, 1, 1, hRoot);
-					AddTables(filename,false,false,_T("COP"));
-					m_wndFileView.SetItemColor(NewItem,RGB(128,128,128));
+					HTREEITEM NewItem = m_wndFileView.InsertItem(filename, 1, 1, hRoot);
+					AddTables(filename, false, false, _T("COP"));
+					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
 				}
 			}
 			DBFeatureset.Close();
 		}
 		//如果是线文件
-		if (fileDialog.GetFileExt()==_T("COL"))
+		if (fileDialog.GetFileExt() == _T("COL"))
 		{
 			CoConnect conn;
 			GetConnect(conn);
 			CoFeatureset DBFeatureset;
-			if (DBFeatureset.Open(&conn,filename))
+			if (DBFeatureset.Open(&conn, filename))
 			{
-				if(DBFeatureset.NewTable(2))
+				if (DBFeatureset.NewTable(2))
 				{
-					HTREEITEM NewItem=m_wndFileView.InsertItem(filename, 2, 2, hRoot);
-					AddTables(filename,false,false,_T("COL"));
-					m_wndFileView.SetItemColor(NewItem,RGB(128,128,128));
+					HTREEITEM NewItem = m_wndFileView.InsertItem(filename, 2, 2, hRoot);
+					AddTables(filename, false, false, _T("COL"));
+					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
 				}
 			}
 			DBFeatureset.Close();
 		}
 		//如果是区文件
-		if (fileDialog.GetFileExt()==_T("COA"))
+		if (fileDialog.GetFileExt() == _T("COA"))
 		{
 			CoConnect conn;
 			GetConnect(conn);
 			CoFeatureset DBFeatureset;
-			if (DBFeatureset.Open(&conn,filename))
+			if (DBFeatureset.Open(&conn, filename))
 			{
-				if(DBFeatureset.NewTable(3))
+				if (DBFeatureset.NewTable(3))
 				{
-					HTREEITEM NewItem=m_wndFileView.InsertItem(filename, 3, 3, hRoot);
-					AddTables(filename,false,false,_T("COA"));
-					m_wndFileView.SetItemColor(NewItem,RGB(128,128,128));
+					HTREEITEM NewItem = m_wndFileView.InsertItem(filename, 3, 3, hRoot);
+					AddTables(filename, false, false, _T("COA"));
+					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
 				}
 			}
 			DBFeatureset.Close();
 		}
 		//如果是注释文件
-		if (fileDialog.GetFileExt()==_T("CON"))
+		if (fileDialog.GetFileExt() == _T("CON"))
 		{
 			CoConnect conn;
 			GetConnect(conn);
 			CoFeatureset DBFeatureset;
-			if (DBFeatureset.Open(&conn,filename))
+			if (DBFeatureset.Open(&conn, filename))
 			{
-				if(DBFeatureset.NewTable(4))
+				if (DBFeatureset.NewTable(4))
 				{
-					HTREEITEM NewItem=m_wndFileView.InsertItem(filename, 4, 4, hRoot);
-					AddTables(filename,false,false,_T("CON"));
-					m_wndFileView.SetItemColor(NewItem,RGB(128,128,128));
+					HTREEITEM NewItem = m_wndFileView.InsertItem(filename, 4, 4, hRoot);
+					AddTables(filename, false, false, _T("CON"));
+					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
 				}
 			}
 			DBFeatureset.Close();
@@ -384,54 +384,54 @@ void CDBView::OnOpenItem()
 	//m_wndFileView.SetItemColor(tempItem,RGB(255,255,0));
 	//m_wndFileView.SetItemBold(tempItem,TRUE);
 	setOpenMark(m_wndFileView.GetItemText(tempItem));
-	m_wndFileView.SetItemColor(tempItem,RGB(255,0,0));
+	m_wndFileView.SetItemColor(tempItem, RGB(255, 0, 0));
 	//view状态清空
 	DelViewState();
 	//刷新显示
-	CMainFrame*   pMainFrm   =   (CMainFrame*)AfxGetMainWnd(); 
-	pMainFrm-> GetActiveView()->Invalidate(TRUE);
+	CMainFrame* pMainFrm = (CMainFrame*)AfxGetMainWnd();
+	pMainFrm->GetActiveView()->Invalidate(TRUE);
 }
 //关闭文件
 void CDBView::OnCloseItem()
 {
 	setCloseMark(m_wndFileView.GetItemText(tempItem));
-	m_wndFileView.SetItemColor(tempItem,RGB(128,128,128));
-	m_wndFileView.SetItemBold(tempItem,FALSE);
+	m_wndFileView.SetItemColor(tempItem, RGB(128, 128, 128));
+	m_wndFileView.SetItemBold(tempItem, FALSE);
 	//view状态清空
 	DelViewState();
 	//刷新显示
-	CMainFrame*   pMainFrm   =   (CMainFrame*)AfxGetMainWnd(); 
-	pMainFrm-> GetActiveView()->Invalidate(TRUE);
+	CMainFrame* pMainFrm = (CMainFrame*)AfxGetMainWnd();
+	pMainFrm->GetActiveView()->Invalidate(TRUE);
 }
 //激活文件
 void CDBView::OnActiveItem()
 {
 	CString tem;//设置一个临时节点
-	HTREEITEM orItem=hRoot;
-	if(setActiveMark(m_wndFileView.GetItemText(tempItem),tem))
+	HTREEITEM orItem = hRoot;
+	if (setActiveMark(m_wndFileView.GetItemText(tempItem), tem))
 	{
-		orItem=FindTreeItem(orItem,tem);
-		m_wndFileView.SetItemColor(orItem,RGB(255,0,0));
-		m_wndFileView.SetItemBold(orItem,FALSE);
-	
-		m_wndFileView.SetItemColor(tempItem,RGB(255,0,0));
-		m_wndFileView.SetItemBold(tempItem,TRUE);
+		orItem = FindTreeItem(orItem, tem);
+		m_wndFileView.SetItemColor(orItem, RGB(255, 0, 0));
+		m_wndFileView.SetItemBold(orItem, FALSE);
+
+		m_wndFileView.SetItemColor(tempItem, RGB(255, 0, 0));
+		m_wndFileView.SetItemBold(tempItem, TRUE);
 	}
 	else
 	{
-		m_wndFileView.SetItemColor(tempItem,RGB(255,0,0));
-		m_wndFileView.SetItemBold(tempItem,TRUE);
+		m_wndFileView.SetItemColor(tempItem, RGB(255, 0, 0));
+		m_wndFileView.SetItemBold(tempItem, TRUE);
 	}
 	//view状态清空
 	DelViewState();
 	//刷新显示
-	CMainFrame*   pMainFrm   =   (CMainFrame*)AfxGetMainWnd(); 
-	pMainFrm-> GetActiveView()->Invalidate(TRUE);
+	CMainFrame* pMainFrm = (CMainFrame*)AfxGetMainWnd();
+	pMainFrm->GetActiveView()->Invalidate(TRUE);
 }
 //删除文件
 void CDBView::OnDelItem()
 {
-	if (MessageBox("确定删除该文件吗?","提示",MB_YESNO| MB_ICONEXCLAMATION)==IDYES)
+	if (MessageBox("确定删除该文件吗?", "提示", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
 	{
 		//在此增加调用数据库代码
 		remItemMark(m_wndFileView.GetItemText(tempItem));
@@ -439,11 +439,11 @@ void CDBView::OnDelItem()
 		Table = "TableItem";
 		CString TableName = m_wndFileView.GetItemText(tempItem);
 		CoConnect conn;
-		GetConnect(conn); 
+		GetConnect(conn);
 		CoFeatureset DBFeatureset;
-		if(DBFeatureset.Open(&conn,Table))
+		if (DBFeatureset.Open(&conn, Table))
 		{
-			if(DBFeatureset.DelTable(TableName))
+			if (DBFeatureset.DelTable(TableName))
 			{
 				m_wndFileView.DeleteItem(tempItem);
 			}
@@ -453,43 +453,43 @@ void CDBView::OnDelItem()
 	//view状态清空
 	DelViewState();
 	//刷新显示
-	CMainFrame*   pMainFrm   =   (CMainFrame*)AfxGetMainWnd(); 
-	pMainFrm-> GetActiveView()->Invalidate(TRUE);
+	CMainFrame* pMainFrm = (CMainFrame*)AfxGetMainWnd();
+	pMainFrm->GetActiveView()->Invalidate(TRUE);
 }
 /*=========end 单文件操作===========*/
 
 //查找相关节点
-HTREEITEM CDBView::FindTreeItem(HTREEITEM item,CString& strText)   
+HTREEITEM CDBView::FindTreeItem(HTREEITEM item, CString& strText)
 {
-	HTREEITEM  hFind;   
-	if(item == NULL)   
-		return  NULL;  
+	HTREEITEM  hFind;
+	if (item == NULL)
+		return  NULL;
 
-	while(item!=NULL)   
-	{   
-		if(m_wndFileView.GetItemText(item) == strText)   
-			return item;  
+	while (item != NULL)
+	{
+		if (m_wndFileView.GetItemText(item) == strText)
+			return item;
 
-		if(m_wndFileView.ItemHasChildren(item))   
-		{   
-			item = m_wndFileView.GetChildItem(item);   
-			hFind = FindTreeItem(item,strText);   
-			if(hFind)   
-			{   
-				return hFind;   
-			}   
-			else   
-				item= m_wndFileView.GetNextSiblingItem(m_wndFileView.GetParentItem(item));   
-		}   
-		else   
-		{   
-			item = m_wndFileView.GetNextSiblingItem(item);   
-			if(item == NULL)   
-				return NULL;   
-		}   
-	}  
+		if (m_wndFileView.ItemHasChildren(item))
+		{
+			item = m_wndFileView.GetChildItem(item);
+			hFind = FindTreeItem(item, strText);
+			if (hFind)
+			{
+				return hFind;
+			}
+			else
+				item = m_wndFileView.GetNextSiblingItem(m_wndFileView.GetParentItem(item));
+		}
+		else
+		{
+			item = m_wndFileView.GetNextSiblingItem(item);
+			if (item == NULL)
+				return NULL;
+		}
+	}
 
-	return   item;   
+	return   item;
 }
 
 //删除view区状态
@@ -500,6 +500,6 @@ void CDBView::DelViewState()
 		delete m_BaseOper;
 		m_BaseOper = NULL;
 	}
-	m_OverAllOper= 0;
-	m_CurrentOper=_T("无操作");
+	m_OverAllOper = 0;
+	m_CurrentOper = _T("无操作");
 }

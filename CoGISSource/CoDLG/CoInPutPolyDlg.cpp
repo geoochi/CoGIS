@@ -16,7 +16,7 @@ CoInPutPolyDlg::CoInPutPolyDlg(CWnd* pParent /*=NULL*/)
 	m_FillStyle = -1;
 	m_PolyStyle = -1;
 	m_PolyLayer = 0;
-	m_PolyFillCor = RGB(0,0,0);
+	m_PolyFillCor = RGB(0, 0, 0);
 }
 
 CoInPutPolyDlg::~CoInPutPolyDlg()
@@ -47,7 +47,7 @@ void CoInPutPolyDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	CColorDialog FillCorDlg;
-	if (FillCorDlg.DoModal()==IDOK)
+	if (FillCorDlg.DoModal() == IDOK)
 	{
 		m_PolyFillCor = FillCorDlg.GetColor();
 	}
@@ -63,9 +63,9 @@ BOOL CoInPutPolyDlg::OnInitDialog()
 	m_ConPolyStle.SetCurSel(1);
 
 	//添加背景
-	CBitmap bmp; 
-	bmp.LoadBitmap(IDB_BITMAP_Background); 
-	m_brBk.CreatePatternBrush(&bmp); 
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BITMAP_Background);
+	m_brBk.CreatePatternBrush(&bmp);
 	bmp.DeleteObject();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -78,9 +78,9 @@ HBRUSH CoInPutPolyDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  在此更改 DC 的任何特性
-	if (pWnd == this) 
-	{ 
-		return m_brBk; 
+	if (pWnd == this)
+	{
+		return m_brBk;
 	}
 	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
 	return hbr;

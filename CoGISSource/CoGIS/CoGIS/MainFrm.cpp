@@ -44,7 +44,7 @@ CMainFrame::CMainFrame()
 {
 	// TODO: 在此添加成员初始化代码
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
-	IsShowTCPanel=true;
+	IsShowTCPanel = true;
 }
 
 CMainFrame::~CMainFrame()
@@ -54,7 +54,7 @@ CMainFrame::~CMainFrame()
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWndEx::OnCreate(lpCreateStruct) == -1)
-		return -1; 
+		return -1;
 
 	BOOL bNameValid;
 	// 基于持久值设置视觉管理器和样式
@@ -78,9 +78,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // 未能创建
 	}
 	//========尝试附加工具栏=================
-	if (!m_CoGISToolbar.Create(this, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | 
-        CBRS_FLYBY | CBRS_SIZE_DYNAMIC,IDR_TOOLBAR_GIS) ||
-        !m_CoGISToolbar.LoadToolBar( IDR_TOOLBAR_GIS))
+	if (!m_CoGISToolbar.Create(this, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS |
+		CBRS_FLYBY | CBRS_SIZE_DYNAMIC, IDR_TOOLBAR_GIS) ||
+		!m_CoGISToolbar.LoadToolBar(IDR_TOOLBAR_GIS))
 	{
 		TRACE0("未能创建工具栏\n");
 		return -1;      // 未能创建
@@ -88,8 +88,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_CoGISToolbar.SetWindowText(_T("整体操作工具条"));
 	//==========gis工具条============
 	//===========其他工具条==========
-	if (!m_CoPntToolbar.Create(this,WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | 
-		CBRS_FLYBY | CBRS_SIZE_DYNAMIC,IDR_TB_Pnt) ||
+	if (!m_CoPntToolbar.Create(this, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS |
+		CBRS_FLYBY | CBRS_SIZE_DYNAMIC, IDR_TB_Pnt) ||
 		!m_CoPntToolbar.LoadToolBar(IDR_TB_Pnt))
 	{
 		TRACE0("未能创建点操作工具栏\n");
@@ -97,8 +97,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	m_CoPntToolbar.SetWindowText(_T("点操作工具条"));
 
-	if (!m_CoLineToolbar.Create(this, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | 
-		CBRS_FLYBY | CBRS_SIZE_DYNAMIC,IDR_TB_Line) ||
+	if (!m_CoLineToolbar.Create(this, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS |
+		CBRS_FLYBY | CBRS_SIZE_DYNAMIC, IDR_TB_Line) ||
 		!m_CoLineToolbar.LoadToolBar(IDR_TB_Line))
 	{
 		TRACE0("未能创建线操作工具栏\n");
@@ -106,8 +106,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	m_CoLineToolbar.SetWindowText(_T("线操作工具条"));
 
-	if (!m_CoAreaToolbar.Create(this, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | 
-		CBRS_FLYBY | CBRS_SIZE_DYNAMIC,IDR_TB_Area) ||
+	if (!m_CoAreaToolbar.Create(this, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS |
+		CBRS_FLYBY | CBRS_SIZE_DYNAMIC, IDR_TB_Area) ||
 		!m_CoAreaToolbar.LoadToolBar(IDR_TB_Area))
 	{
 		TRACE0("未能创建区操作工具栏\n");
@@ -115,8 +115,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	m_CoAreaToolbar.SetWindowText(_T("区操作工具条"));
 
-	if (!m_CoNoteToolbar.Create(this, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | 
-		CBRS_FLYBY | CBRS_SIZE_DYNAMIC,IDR_TB_Note) ||
+	if (!m_CoNoteToolbar.Create(this, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS |
+		CBRS_FLYBY | CBRS_SIZE_DYNAMIC, IDR_TB_Note) ||
 		!m_CoNoteToolbar.LoadToolBar(IDR_TB_Note))
 	{
 		TRACE0("未能创建注释操作工具栏\n");
@@ -128,7 +128,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	bNameValid = strToolBarName.LoadString(IDS_TOOLBAR_STANDARD);
 	ASSERT(bNameValid);
 	m_wndToolBar.SetWindowText(strToolBarName);
-	
+
 
 	CString strCustomize;
 	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
@@ -143,20 +143,20 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("未能创建状态栏\n");
 		return -1;      // 未能创建
 	}
-	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
+	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
 	//默认状态栏显示
 	/*当前操作*/
-	m_wndStatusBar.SetPaneWidth(m_wndStatusBar.CommandToIndex(ID_INDICATOR_CAPS),50);
-	m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_CAPS), _T("当前操作:"),TRUE);
+	m_wndStatusBar.SetPaneWidth(m_wndStatusBar.CommandToIndex(ID_INDICATOR_CAPS), 50);
+	m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_CAPS), _T("当前操作:"), TRUE);
 
-	m_wndStatusBar.SetPaneWidth(m_wndStatusBar.CommandToIndex(ID_INDICATOR_NUM),100);
-	m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_NUM), _T("无操作"),TRUE);
+	m_wndStatusBar.SetPaneWidth(m_wndStatusBar.CommandToIndex(ID_INDICATOR_NUM), 100);
+	m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_NUM), _T("无操作"), TRUE);
 
 	/*坐标显示*/
-	m_wndStatusBar.SetPaneWidth(m_wndStatusBar.CommandToIndex(ID_INDICATOR_SCRL),50);
-	m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_SCRL), _T("当前坐标:"),TRUE);
+	m_wndStatusBar.SetPaneWidth(m_wndStatusBar.CommandToIndex(ID_INDICATOR_SCRL), 50);
+	m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_SCRL), _T("当前坐标:"), TRUE);
 
-	m_wndStatusBar.SetPaneWidth(m_wndStatusBar.CommandToIndex(IDS_MOUSE_POINT),200);
+	m_wndStatusBar.SetPaneWidth(m_wndStatusBar.CommandToIndex(IDS_MOUSE_POINT), 200);
 
 	// TODO: 如果您不希望工具栏和菜单栏可停靠，请删除这五行
 	m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
@@ -194,9 +194,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	//自定义面板
 	m_wndDBView.EnableDocking(CBRS_ALIGN_ANY);
-	m_wndFileView.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndFileView);
-	
+	//m_wndFileView.EnableDocking(CBRS_ALIGN_ANY);
+	//DockPane(&m_wndFileView);
+
 	//自定义
 	DockPane(&m_wndDBView);
 
@@ -253,7 +253,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if( !CFrameWndEx::PreCreateWindow(cs) )
+	if (!CFrameWndEx::PreCreateWindow(cs))
 		return FALSE;
 	// TODO: 在此处通过修改
 	//  CREATESTRUCT cs 来修改窗口类或样式
@@ -264,20 +264,20 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 BOOL CMainFrame::CreateDockingWindows()
 {
 	BOOL bNameValid;
-	// 创建文件视图
-	CString strFileView;
-	bNameValid = strFileView.LoadString(IDS_FILE_VIEW);
-	ASSERT(bNameValid);
-	if (!m_wndFileView.Create(strFileView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_FILEVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
-	{
-		TRACE0("未能创建“文件视图”窗口\n");
-		return FALSE; // 未能创建
-	}
+	//// 创建文件视图
+	//CString strFileView;
+	//bNameValid = strFileView.LoadString(IDS_FILE_VIEW);
+	//ASSERT(bNameValid);
+	//if (!m_wndFileView.Create(strFileView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_FILEVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
+	//{
+	//	TRACE0("未能创建“文件视图”窗口\n");
+	//	return FALSE; // 未能创建
+	//}
 	// 创建图层视图
 	CString strDBView;
 	bNameValid = strDBView.LoadString(IDS_DB_VIEW);
 	ASSERT(bNameValid);
-	if (!m_wndDBView.Create(strDBView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_DBVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
+	if (!m_wndDBView.Create(strDBView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_DBVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
 		TRACE0("未能创建“图层管理”窗口\n");
 		return FALSE; // 未能创建
@@ -289,8 +289,8 @@ BOOL CMainFrame::CreateDockingWindows()
 
 void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 {
-	HICON hFileViewIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_FILE_VIEW_HC : IDI_FILE_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
-	m_wndFileView.SetIcon(hFileViewIcon, FALSE);
+	//HICON hFileViewIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_FILE_VIEW_HC : IDI_FILE_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+	//m_wndFileView.SetIcon(hFileViewIcon, FALSE);
 
 	HICON hDBViewIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_FILE_VIEW_HC : IDI_FILE_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wndDBView.SetIcon(hDBViewIcon, FALSE);
@@ -330,9 +330,9 @@ void CMainFrame::OnViewCustomize()
 	pDlgCust->Create();
 }
 
-LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp,LPARAM lp)
+LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp)
 {
-	LRESULT lres = CFrameWndEx::OnToolbarCreateNew(wp,lp);
+	LRESULT lres = CFrameWndEx::OnToolbarCreateNew(wp, lp);
 	if (lres == 0)
 	{
 		return 0;
@@ -425,7 +425,7 @@ void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI)
 	pCmdUI->SetRadio(theApp.m_nAppLook == pCmdUI->m_nID);
 }
 
-BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) 
+BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext)
 {
 	// 基类将执行真正的工作
 
@@ -441,7 +441,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
 	ASSERT(bNameValid);
 
-	for (int i = 0; i < iMaxUserToolbars; i ++)
+	for (int i = 0; i < iMaxUserToolbars; i++)
 	{
 		CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);
 		if (pUserToolbar != NULL)
@@ -465,19 +465,19 @@ void CMainFrame::OnTcboard()
 	// TODO: 在此添加命令处理程序代码
 	if (IsShowTCPanel)
 	{
-		m_wndDBView.ShowPane(FALSE,FALSE,TRUE);
-		IsShowTCPanel=false;
+		m_wndDBView.ShowPane(FALSE, FALSE, TRUE);
+		IsShowTCPanel = false;
 	}
 	else
 	{
-		m_wndDBView.ShowPane(TRUE,FALSE,TRUE);
-		IsShowTCPanel=true;
+		m_wndDBView.ShowPane(TRUE, FALSE, TRUE);
+		IsShowTCPanel = true;
 	}
 
 }
 
 //显示图层菜单响应勾选函数
-void CMainFrame::OnUpdateTcboard(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateTcboard(CCmdUI* pCmdUI)
 {
 	// TODO: 在此添加命令更新用户界面处理程序代码
 	if (IsShowTCPanel)

@@ -11,7 +11,7 @@ public:
 	LoginDLG(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~LoginDLG();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_DIALOG_LOGIN };
 
 protected:

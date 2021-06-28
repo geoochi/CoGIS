@@ -15,7 +15,7 @@ CoInputLineDlg::CoInputLineDlg(CWnd* pParent /*=NULL*/)
 {
 	m_LineWide = 1;
 	m_LayerNum = 0;
-	m_LineCor = RGB(0,0,0);
+	m_LineCor = RGB(0, 0, 0);
 	m_LineStyle = -1;
 }
 
@@ -48,8 +48,8 @@ void CoInputLineDlg::OnBnClickedButtonCor()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	CColorDialog cor;
-	if (cor.DoModal()==IDOK)
-		m_LineCor = cor.GetColor();	
+	if (cor.DoModal() == IDOK)
+		m_LineCor = cor.GetColor();
 }
 
 
@@ -61,9 +61,9 @@ BOOL CoInputLineDlg::OnInitDialog()
 	m_ConLineStyle.SetCurSel(0);
 
 	//添加背景
-	CBitmap bmp; 
-	bmp.LoadBitmap(IDB_BITMAP_Background); 
-	m_brBk.CreatePatternBrush(&bmp); 
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BITMAP_Background);
+	m_brBk.CreatePatternBrush(&bmp);
 	bmp.DeleteObject();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -76,9 +76,9 @@ HBRUSH CoInputLineDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  在此更改 DC 的任何特性
-	if (pWnd == this) 
-	{ 
-		return m_brBk; 
+	if (pWnd == this)
+	{
+		return m_brBk;
 	}
 	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
 	return hbr;

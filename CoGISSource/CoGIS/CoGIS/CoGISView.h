@@ -68,7 +68,6 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnCeshi();
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnInputPoint();

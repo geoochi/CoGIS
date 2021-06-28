@@ -12,12 +12,12 @@ public:
 	CoInputLineDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CoInputLineDlg();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_INPUTLINE };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
-	
+
 	DECLARE_MESSAGE_MAP()
 public:
 	CBrush m_brBk;//定义一个背景画刷

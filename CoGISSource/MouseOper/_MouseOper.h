@@ -14,8 +14,8 @@ class BaseOper CoBaseTool
 public:
 	CoBaseTool();
 	virtual ~CoBaseTool();
-	virtual void LButtonDown (UINT nFlags, CoPnt point);
-	virtual void LButtonUp (UINT nFlags, CoPnt point);
+	virtual void LButtonDown(UINT nFlags, CoPnt point);
+	virtual void LButtonUp(UINT nFlags, CoPnt point);
 	virtual void RButtonDown(UINT nFlags, CoPnt point);
 	virtual void RButtonUp(UINT nFlags, CoPnt point);
 	virtual void MouseMove(UINT nFlags, CoPnt point);
@@ -24,12 +24,12 @@ public:
 	CView* m_ptView;
 };
 
-  #ifndef _MouseOper_EXPORT_
-    #ifdef _DEBUG
-      #pragma comment(lib,"CoMouse.lib")
-    #else
-      #pragma comment(lib,"CoMouse.lib")
-    #endif
- #endif
+#ifndef _MouseOper_EXPORT_
+#ifdef _DEBUG
+#pragma comment(lib,"CoMouse.lib")
+#else
+#pragma comment(lib,"CoMouse.lib")
+#endif
+#endif
 #endif
 

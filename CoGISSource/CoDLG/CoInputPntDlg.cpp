@@ -16,7 +16,7 @@ CoInputPntDlg::CoInputPntDlg(CWnd* pParent /*=NULL*/)
 	m_PntStyle = -1;
 	m_Radio = 1;
 	m_Layer = 0;
-	m_PntCor = RGB(0,0,0);
+	m_PntCor = RGB(0, 0, 0);
 }
 
 CoInputPntDlg::~CoInputPntDlg()
@@ -47,7 +47,7 @@ void CoInputPntDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	CColorDialog MyCorDlg;
-	if (MyCorDlg.DoModal()==IDOK)
+	if (MyCorDlg.DoModal() == IDOK)
 	{
 		m_PntCor = MyCorDlg.GetColor();
 	}
@@ -62,9 +62,9 @@ BOOL CoInputPntDlg::OnInitDialog()
 	m_ConPntStyle.SetCurSel(0);
 
 	//添加背景
-	CBitmap bmp; 
-	bmp.LoadBitmap(IDB_BITMAP_Background); 
-	m_brBk.CreatePatternBrush(&bmp); 
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BITMAP_Background);
+	m_brBk.CreatePatternBrush(&bmp);
 	bmp.DeleteObject();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -77,9 +77,9 @@ HBRUSH CoInputPntDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  在此更改 DC 的任何特性
-	if (pWnd == this) 
-	{ 
-		return m_brBk; 
+	if (pWnd == this)
+	{
+		return m_brBk;
 	}
 	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
 	return hbr;

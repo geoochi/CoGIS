@@ -22,16 +22,16 @@ CoPntPorDlg::CoPntPorDlg(CWnd* pParent /*=NULL*/)
 	m_PntStyle = -1;
 }
 
-CoPntPorDlg::CoPntPorDlg(int Style,CString PntStyle,int Raido,int PntCor,int PntLayer,CWnd* pParent /* = NULL */)
+CoPntPorDlg::CoPntPorDlg(int Style, CString PntStyle, int Raido, int PntCor, int PntLayer, CWnd* pParent /* = NULL */)
 	: CDialog(CoPntPorDlg::IDD, pParent)
 {
 	m_OrPntStyle = PntStyle;
-	m_Radio =m_OrRadio = Raido;
+	m_Radio = m_OrRadio = Raido;
 	m_OrPntCor = PntCor;
-	m_Layler =m_OrPntLayler = PntLayer;
+	m_Layler = m_OrPntLayler = PntLayer;
 	m_PntStyle = Style;
 	m_PntCor = PntCor;
-	Tug1=Tug2=Tug3=Tug4=FALSE;
+	Tug1 = Tug2 = Tug3 = Tug4 = FALSE;
 }
 
 
@@ -78,9 +78,9 @@ BOOL CoPntPorDlg::OnInitDialog()
 	GetDlgItem(IDC_EDIT6)->EnableWindow(FALSE);
 
 	//添加背景
-	CBitmap bmp; 
-	bmp.LoadBitmap(IDB_BITMAP_Background); 
-	m_brBk.CreatePatternBrush(&bmp); 
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BITMAP_Background);
+	m_brBk.CreatePatternBrush(&bmp);
 	bmp.DeleteObject();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -92,7 +92,7 @@ void CoPntPorDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	CColorDialog corDlg;
-	if (corDlg.DoModal()==IDOK)
+	if (corDlg.DoModal() == IDOK)
 	{
 		m_PntCor = corDlg.GetColor();
 	}
@@ -103,7 +103,7 @@ void CoPntPorDlg::OnBnClickedCheck1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug1)
+	if (Tug1)
 	{
 		GetDlgItem(IDC_COMBO1)->EnableWindow(FALSE);
 		Tug1 = false;
@@ -121,7 +121,7 @@ void CoPntPorDlg::OnBnClickedCheck2()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug2)
+	if (Tug2)
 	{
 		GetDlgItem(IDC_EDIT5)->EnableWindow(FALSE);
 		Tug2 = false;
@@ -139,7 +139,7 @@ void CoPntPorDlg::OnBnClickedCheck3()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug3)
+	if (Tug3)
 	{
 		GetDlgItem(IDC_BUTTON1)->EnableWindow(FALSE);
 		Tug3 = false;
@@ -157,7 +157,7 @@ void CoPntPorDlg::OnBnClickedCheck4()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	if(Tug4)
+	if (Tug4)
 	{
 		GetDlgItem(IDC_EDIT6)->EnableWindow(FALSE);
 		Tug4 = false;
@@ -176,9 +176,9 @@ HBRUSH CoPntPorDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  在此更改 DC 的任何特性
-	if (pWnd == this) 
-	{ 
-		return m_brBk; 
+	if (pWnd == this)
+	{
+		return m_brBk;
 	}
 	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
 	return hbr;

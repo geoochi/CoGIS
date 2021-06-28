@@ -9,10 +9,10 @@ class CoPolyProDLG : public CDialog
 
 public:
 	CoPolyProDLG(CWnd* pParent = NULL);   // 标准构造函数
-	CoPolyProDLG(CoPolyPro& PolyPro,CString PolyStyle,CString FillStyle,CWnd* pParent = NULL);
+	CoPolyProDLG(CoPolyPro& PolyPro, CString PolyStyle, CString FillStyle, CWnd* pParent = NULL);
 	virtual ~CoPolyProDLG();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_POLYPRO };
 	CBrush m_brBk;//定义一个背景画刷
 	int		m_PolyStyle;

@@ -65,7 +65,7 @@ CCoGISApp theApp;
 
 BOOL CCoGISApp::InitInstance()
 {
-//登录对话框，因为测试原因，暂时去掉	
+	//登录对话框，因为测试原因，暂时去掉	
 	//LoginDLG dlg;
 	//if (dlg.DoModal()==IDOK)
 	//{
@@ -84,13 +84,13 @@ BOOL CCoGISApp::InitInstance()
 	//}
 	//else
 	//	return FALSE;
-	m_DB.szIP=_T("localhost\\SQLEXPRESS");
-	m_DB.szDsn=_T("CoGISDB");
-	m_DB.szName=_T("sa");
-	m_DB.szPassword=_T("Sailor_9066");
-	DBIP=m_DB.szIP;
+	m_DB.szIP = _T("localhost\\SQLEXPRESS");
+	m_DB.szDsn = _T("CoGISDB");
+	m_DB.szName = _T("sa");
+	m_DB.szPassword = _T("Sailor_9066");
+	DBIP = m_DB.szIP;
 	//*********下面是文件系统**************
-	workpath=_T("..\\res\\");
+	workpath = _T("..\\res\\");
 	//***************************************
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
@@ -188,7 +188,7 @@ class CAboutDlg : public CDialogEx
 public:
 	CAboutDlg();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_ABOUTBOX };
 
 protected:

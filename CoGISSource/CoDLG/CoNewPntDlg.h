@@ -11,7 +11,7 @@ public:
 	CoNewPntDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CoNewPntDlg();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_NEWPNTITEM };
 	CBrush m_brBk;//定义一个背景画刷
 	CString	m_PntName;

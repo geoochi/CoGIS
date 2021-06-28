@@ -9,23 +9,23 @@
 
 class CMainFrame : public CFrameWndEx
 {
-	
+
 protected: // 仅从序列化创建
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
 
-// 特性
+	// 特性
 public:
 
-// 操作
+	// 操作
 public:
 
-// 重写
+	// 重写
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL);
 
-// 实现
+	// 实现
 public:
 	virtual ~CMainFrame();
 #ifdef _DEBUG
@@ -42,20 +42,20 @@ protected:  // 控件条嵌入成员
 	CMFCToolBar       m_CoLineToolbar; //线操作控件
 	CMFCToolBar       m_CoAreaToolbar; //区操作控件
 	CMFCToolBar       m_CoNoteToolbar; //注释操作控件
-	
+
 	CMFCStatusBar     m_wndStatusBar;
 	CMFCToolBarImages m_UserImages;
-	CFileView         m_wndFileView;
+	//CFileView         m_wndFileView;
 
 	//图层控制变量
 	CDBView m_wndDBView;
 public:
-	CMFCStatusBar&GetStatusBar ()
+	CMFCStatusBar& GetStatusBar()
 	{
 		return m_wndStatusBar;
 	}
 
-// 生成的消息映射函数
+	// 生成的消息映射函数
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewCustomize();
@@ -73,7 +73,7 @@ private:
 	//私有变量
 	bool IsShowTCPanel;
 public:
-	afx_msg void OnUpdateTcboard(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateTcboard(CCmdUI* pCmdUI);
 };
 
 

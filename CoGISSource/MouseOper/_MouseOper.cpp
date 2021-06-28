@@ -6,16 +6,16 @@ CoBaseTool::CoBaseTool()
 	m_ptView = NULL;
 }
 
-CoBaseTool::~CoBaseTool(){}
+CoBaseTool::~CoBaseTool() {}
 
-void CoBaseTool::LButtonDown(UINT nFlags, CoPnt point){}
+void CoBaseTool::LButtonDown(UINT nFlags, CoPnt point) {}
 
-void CoBaseTool::LButtonUp(UINT nFlags, CoPnt point){}
+void CoBaseTool::LButtonUp(UINT nFlags, CoPnt point) {}
 
-void CoBaseTool::RButtonDown(UINT nFlags, CoPnt point){}
+void CoBaseTool::RButtonDown(UINT nFlags, CoPnt point) {}
 
-void CoBaseTool::RButtonUp(UINT nFlags, CoPnt point){}
+void CoBaseTool::RButtonUp(UINT nFlags, CoPnt point) {}
 
-void CoBaseTool::MouseMove(UINT nFlags, CoPnt point){}
+void CoBaseTool::MouseMove(UINT nFlags, CoPnt point) {}
 
-void CoBaseTool::MouseWheel(UINT nFlags, short zDelta, CoPnt pt){}
+void CoBaseTool::MouseWheel(UINT nFlags, short zDelta, CoPnt pt) {}

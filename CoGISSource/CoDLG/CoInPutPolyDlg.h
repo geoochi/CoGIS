@@ -11,7 +11,7 @@ public:
 	CoInPutPolyDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CoInPutPolyDlg();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_INPUTPOLY };
 public:
 	CBrush m_brBk;//定义一个背景画刷

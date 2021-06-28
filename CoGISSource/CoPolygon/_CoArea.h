@@ -18,7 +18,7 @@ using namespace std;
 class PolyOper CoInputPoly : public CoBaseTool
 {
 public:
-	CoInputPoly(CView* ptview,CoDB& DB,CString& Table,CoScreen Screen);
+	CoInputPoly(CView* ptview, CoDB& DB, CString& Table, CoScreen Screen);
 	~CoInputPoly();
 
 	void LButtonDown(UINT nFlags, CoPnt point);
@@ -31,7 +31,7 @@ private:
 	CoPnt m_ptOrigin;
 	CoPnt m_PerPoint;
 	CoLinePro m_LinePro;
-    vector<CoPnt>m_Poly;
+	vector<CoPnt>m_Poly;
 	CoDB m_DB;
 	CString m_Table;
 
@@ -44,8 +44,8 @@ class PolyOper CoSelectPoly : public CoBaseTool
 {
 public:
 	CoSelectPoly();
-	CoSelectPoly(CView* ptview,CoDB& DB,CString& Table,CoScreen Screen,bool ISDrawPnt);
-    ~CoSelectPoly();
+	CoSelectPoly(CView* ptview, CoDB& DB, CString& Table, CoScreen Screen, bool ISDrawPnt);
+	~CoSelectPoly();
 
 	void LButtonDown(UINT nFlags, CoPnt point);
 	void LButtonUp(UINT nFlags, CoPnt point);
@@ -68,11 +68,11 @@ public:
 	static 	bool m_Selected;
 
 public:
-	inline static void CALLBACK TimerProc(HWND hWnd,UINT nMsg,UINT nTimerid,DWORD dwTime)
+	inline static void CALLBACK TimerProc(HWND hWnd, UINT nMsg, UINT nTimerid, DWORD dwTime)
 	{
 		static CoPolyPro pro;
-		CoCDC dc(m_staticView,m_Screen);
-		dc.XDrawAllPoly(m_Poly,m_PolyPro);
+		CoCDC dc(m_staticView, m_Screen);
+		dc.XDrawAllPoly(m_Poly, m_PolyPro);
 	}
 };
 
@@ -81,9 +81,9 @@ public:
 class PolyOper CoMovePoly : public CoBaseTool
 {
 public:
-	CoMovePoly(CView* ptView,CoDB& DB,CString& Table,CoScreen Screen);
+	CoMovePoly(CView* ptView, CoDB& DB, CString& Table, CoScreen Screen);
 	~CoMovePoly();
-	
+
 	void LButtonDown(UINT nFlags, CoPnt point);
 	void LButtonUp(UINT nFlags, CoPnt point);
 	void MouseMove(UINT nFlags, CoPnt point);
@@ -108,9 +108,9 @@ private:
 class PolyOper CoCopyPoly : public CoBaseTool
 {
 public:
-	CoCopyPoly(CView* ptView,CoDB& DB,CString& Table,CoScreen Screen);
+	CoCopyPoly(CView* ptView, CoDB& DB, CString& Table, CoScreen Screen);
 	~CoCopyPoly();
-	
+
 	void LButtonDown(UINT nFlags, CoPnt point);
 	void LButtonUp(UINT nFlags, CoPnt point);
 	void MouseMove(UINT nFlags, CoPnt point);
@@ -121,7 +121,7 @@ private:
 	CString m_ActiveTB;
 	bool m_Selected;
 	bool m_bDraw;
-	
+
 	vector<CoPnt>m_perPoly;
 	CoPnt m_ptOrigin;
 	int index;
@@ -136,9 +136,9 @@ private:
 class PolyOper CoModifyPoly : public CoBaseTool
 {
 public:
-	CoModifyPoly(CView* ptView,CoDB& DB,CString& Table,CoScreen Screen);
+	CoModifyPoly(CView* ptView, CoDB& DB, CString& Table, CoScreen Screen);
 	~CoModifyPoly();
-	
+
 	void LButtonDown(UINT nFlags, CoPnt point);
 	void LButtonUp(UINT nFlags, CoPnt point);
 	void MouseMove(UINT nFlags, CoPnt point);
@@ -154,10 +154,10 @@ private:
 };
 
 //边界加点
-class PolyOper CoAddPntPoly:public CoBaseTool
+class PolyOper CoAddPntPoly :public CoBaseTool
 {
 public:
-	CoAddPntPoly(CView* ptView,CoDB& DB,CString& Table,CoScreen Screen);
+	CoAddPntPoly(CView* ptView, CoDB& DB, CString& Table, CoScreen Screen);
 	~CoAddPntPoly();
 	void LButtonDown(UINT nFlags, CoPnt point);
 	void LButtonUp(UINT nFlags, CoPnt point);
@@ -174,10 +174,10 @@ private:
 };
 
 // 区边界删点 [2/7/2011 shlh]
-class PolyOper CoDelPntPoly:public CoBaseTool
+class PolyOper CoDelPntPoly :public CoBaseTool
 {
 public:
-	CoDelPntPoly(CView* ptView,CoDB& DB,CString& Table,CoScreen Screen);
+	CoDelPntPoly(CView* ptView, CoDB& DB, CString& Table, CoScreen Screen);
 	~CoDelPntPoly();
 	void LButtonDown(UINT nFlags, CoPnt point);
 	void LButtonUp(UINT nFlags, CoPnt point);
@@ -194,10 +194,10 @@ private:
 
 // 区边界移点 [2/7/2011 shlh]
 
-class PolyOper CoMovePntPoly:public CoBaseTool
+class PolyOper CoMovePntPoly :public CoBaseTool
 {
 public:
-	CoMovePntPoly(CView* ptView,CoDB& DB,CString& Table,CoScreen Screen);
+	CoMovePntPoly(CView* ptView, CoDB& DB, CString& Table, CoScreen Screen);
 	~CoMovePntPoly();
 	void LButtonDown(UINT nFlags, CoPnt point);
 	void LButtonUp(UINT nFlags, CoPnt point);
@@ -236,7 +236,7 @@ class PolyOper CoSubPoly : public CoBaseTool
 public:
 	CoSubPoly(CView* ptView);
 	~CoSubPoly();
-    void LButtonDown(UINT nFlags, CoPnt point);
+	void LButtonDown(UINT nFlags, CoPnt point);
 private:
 	CoPolyPro m_PolyPro;
 };
@@ -246,9 +246,9 @@ private:
 class PolyOper CoDeletePoly : public CoBaseTool
 {
 public:
-	CoDeletePoly(CView* ptView,CoDB& DB,CString& Table,CoScreen Screen);
+	CoDeletePoly(CView* ptView, CoDB& DB, CString& Table, CoScreen Screen);
 	~CoDeletePoly();
-	
+
 	void LButtonDown(UINT nFlags, CoPnt point);
 	void LButtonUp(UINT nFlags, CoPnt point);
 	void MouseMove(UINT nFlags, CoPnt point);
@@ -269,7 +269,7 @@ private:
 class PolyOper CoDeleteAllPoly
 {
 public:
-	CoDeleteAllPoly(CView* ptView,CoDB& DB,CString& Table);
+	CoDeleteAllPoly(CView* ptView, CoDB& DB, CString& Table);
 	virtual ~CoDeleteAllPoly();
 	void DelAllPoly();
 private:

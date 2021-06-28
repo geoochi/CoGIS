@@ -21,9 +21,9 @@
 //输入点对话框
 bool DIALOG InputPointDLG(CoPntPro& PointPor)
 {
-	
+
 	CoInputPntDlg PntDlg;
-	if (PntDlg.DoModal()==IDOK)
+	if (PntDlg.DoModal() == IDOK)
 	{
 		PointPor.PntStyle = PntDlg.m_PntStyle;
 		PointPor.PntRadio = PntDlg.m_Radio;
@@ -39,7 +39,7 @@ bool DIALOG InputPointDLG(CoPntPro& PointPor)
 bool DIALOG InputLineDLG(CoLinePro& LinePor)
 {
 	CoInputLineDlg LineDlg;
-	if (LineDlg.DoModal()==IDOK)
+	if (LineDlg.DoModal() == IDOK)
 	{
 		LinePor.LineColor = LineDlg.m_LineCor;
 		LinePor.LineStyle = LineDlg.m_LineStyle;
@@ -54,9 +54,9 @@ bool DIALOG InputLineDLG(CoLinePro& LinePor)
 //输入区对话框
 bool DIALOG InputPolyDLG(CoPolyPro& PolyPor)
 {
-	
+
 	CoInPutPolyDlg PolyDlg;
-	if (PolyDlg.DoModal()==IDOK)
+	if (PolyDlg.DoModal() == IDOK)
 	{
 		PolyPor.PolyFillStyle = PolyDlg.m_FillStyle;
 		PolyPor.PolyColor = PolyDlg.m_PolyFillCor;
@@ -69,18 +69,18 @@ bool DIALOG InputPolyDLG(CoPolyPro& PolyPor)
 //输入注记对话框
 bool DIALOG InputTagPro(CoTagPro& TagPro)
 {
-	
+
 	CoInputTagDlg TagDlg;
-	if (TagDlg.DoModal()==IDOK)
+	if (TagDlg.DoModal() == IDOK)
 	{
-		TagPro.TagHeight=TagDlg.m_tagheight;    //字体高度
-		TagPro.TagWidth=TagDlg.m_tagwidth;     //字体宽度
-		TagPro.TagAngle=360-TagDlg.m_tagangle;  //字体角度
-		TagPro.TextAngle=TagDlg.m_textangle; //文本角度
-		TagPro.TagColor=TagDlg.m_tagcolor;//字体颜色
-		TagPro.TagOffsite=TagDlg.m_tagoffsite;  //字体间距
-		TagPro.TagFont=TagDlg.m_tagfont;  //字体类型
-		TagPro.TagLayer=TagDlg.m_taglayer; //注记图层
+		TagPro.TagHeight = TagDlg.m_tagheight;    //字体高度
+		TagPro.TagWidth = TagDlg.m_tagwidth;     //字体宽度
+		TagPro.TagAngle = 360 - TagDlg.m_tagangle;  //字体角度
+		TagPro.TextAngle = TagDlg.m_textangle; //文本角度
+		TagPro.TagColor = TagDlg.m_tagcolor;//字体颜色
+		TagPro.TagOffsite = TagDlg.m_tagoffsite;  //字体间距
+		TagPro.TagFont = TagDlg.m_tagfont;  //字体类型
+		TagPro.TagLayer = TagDlg.m_taglayer; //注记图层
 		return TRUE;
 	}
 	return FALSE;
@@ -89,11 +89,11 @@ bool DIALOG InputTagPro(CoTagPro& TagPro)
 //输入注记字符串对话框
 bool DIALOG InputTagStr(CoTagPro& TagPro)
 {
-	
+
 	CoInPutTagStrDlg StrDlg;
-	if (StrDlg.DoModal()==IDOK)
+	if (StrDlg.DoModal() == IDOK)
 	{
-		TagPro.TagStr=StrDlg.m_tagstr;
+		TagPro.TagStr = StrDlg.m_tagstr;
 		return TRUE;
 	}
 	return FALSE;
@@ -102,9 +102,9 @@ bool DIALOG InputTagStr(CoTagPro& TagPro)
 //点参数查寻修改
 bool DIALOG PointPro(CoPntPro& PointPro)
 {
-	
+
 	CString style;
-	switch(PointPro.PntStyle)
+	switch (PointPro.PntStyle)
 	{
 	case 0:
 		style = "圆点";
@@ -118,9 +118,9 @@ bool DIALOG PointPro(CoPntPro& PointPro)
 	default:
 		break;
 	}
-	CoPntPorDlg dlg(PointPro.PntStyle,style,PointPro.PntRadio,
-		PointPro.PntColor,PointPro.PntLayer,AfxGetMainWnd());
-	if (dlg.DoModal()==IDOK)
+	CoPntPorDlg dlg(PointPro.PntStyle, style, PointPro.PntRadio,
+		PointPro.PntColor, PointPro.PntLayer, AfxGetMainWnd());
+	if (dlg.DoModal() == IDOK)
 	{
 		PointPro.PntStyle = dlg.m_PntStyle;
 		PointPro.PntRadio = dlg.m_Radio;
@@ -135,35 +135,35 @@ bool DIALOG PointPro(CoPntPro& PointPro)
 //线属性查询与修改
 bool DIALOG LinePro(CoLinePro& LinePro)
 {
-	
+
 	CString style;
-	switch(LinePro.LineStyle)
+	switch (LinePro.LineStyle)
 	{
 	case 0:
 		style = "实线";
-			break;
+		break;
 	case 1:
 		style = "虚线";
-			break;
+		break;
 	case 2:
 		style = "点线";
-			break;
+		break;
 	case 3:
 		style = "点划线";
-			break;
+		break;
 	case 4:
 		style = "双点划线";
-			break;
+		break;
 	case 5:
 		style = "空画笔";
-			break;
+		break;
 	default:
 		break;
 	}
 
-	CoLineProDlg dlg(LinePro.LineStyle,style,
-		LinePro.LineWidth,LinePro.LineColor,LinePro.LineLayer,AfxGetMainWnd());
-	if (dlg.DoModal()==IDOK)
+	CoLineProDlg dlg(LinePro.LineStyle, style,
+		LinePro.LineWidth, LinePro.LineColor, LinePro.LineLayer, AfxGetMainWnd());
+	if (dlg.DoModal() == IDOK)
 	{
 		LinePro.LineStyle = dlg.m_LineStyle;
 		LinePro.LineWidth = dlg.m_EditWide;
@@ -178,10 +178,10 @@ bool DIALOG LinePro(CoLinePro& LinePro)
 //区参数查询与修改
 bool DIALOG PolyGonPro(CoPolyPro& PolygonPro)
 {
-	
+
 	CString style;
 	CString FillStyle;
-	switch(PolygonPro.PolyStyle)
+	switch (PolygonPro.PolyStyle)
 	{
 	case 0:
 		style = "矩形区";
@@ -201,7 +201,7 @@ bool DIALOG PolyGonPro(CoPolyPro& PolygonPro)
 	default:
 		break;
 	}
-	switch(PolygonPro.PolyFillStyle)
+	switch (PolygonPro.PolyFillStyle)
 	{
 	case 0:
 		FillStyle = "水平线";
@@ -228,10 +228,10 @@ bool DIALOG PolyGonPro(CoPolyPro& PolygonPro)
 		break;
 	}
 
-	CoPolyPro MyPolyPro= PolygonPro;
-	CoPolyProDLG dlg(MyPolyPro,style,FillStyle,AfxGetMainWnd());
+	CoPolyPro MyPolyPro = PolygonPro;
+	CoPolyProDLG dlg(MyPolyPro, style, FillStyle, AfxGetMainWnd());
 
-	if (dlg.DoModal()==IDOK)
+	if (dlg.DoModal() == IDOK)
 	{
 		PolygonPro.PolyStyle = dlg.m_PolyStyle;
 		PolygonPro.PolyFillStyle = dlg.m_FillStyle;
@@ -247,9 +247,9 @@ bool DIALOG PolyGonPro(CoPolyPro& PolygonPro)
 //新建点文件
 bool DIALOG NewPointDoc(CString* PntName)
 {
-	
+
 	CoNewPntDlg newPoint;
-	if (newPoint.DoModal()==IDOK)
+	if (newPoint.DoModal() == IDOK)
 	{
 		*PntName = newPoint.m_PntName;
 		return TRUE;
@@ -261,11 +261,11 @@ bool DIALOG NewPointDoc(CString* PntName)
 //新建线文件
 bool DIALOG NewLineDoc(CString* LineName)
 {
-	
+
 	CoNewLineDlg NewLine;
-	if (NewLine.DoModal()==IDOK)
+	if (NewLine.DoModal() == IDOK)
 	{
-		*LineName= NewLine.m_NewLine;
+		*LineName = NewLine.m_NewLine;
 		return TRUE;
 	}
 	return FALSE;
@@ -275,9 +275,9 @@ bool DIALOG NewLineDoc(CString* LineName)
 //新建区文件
 bool DIALOG NewPolyDoc(CString* PolyName)
 {
-	
+
 	CoNewPolyDlg NewPoly;
-	if (NewPoly.DoModal()==IDOK)
+	if (NewPoly.DoModal() == IDOK)
 	{
 		*PolyName = NewPoly.m_NewPolyItem;
 		return TRUE;
@@ -288,22 +288,22 @@ bool DIALOG NewPolyDoc(CString* PolyName)
 //新建字体文件
 bool DIALOG NewTagDoc(CString* TagName)
 {
-	
+
 	CoNewTagDlg NewTag;
-	if (NewTag.DoModal()==IDOK)
+	if (NewTag.DoModal() == IDOK)
 	{
 		*TagName = NewTag.m_TagName;
 		return TRUE;
 	}
-	return FALSE;	
+	return FALSE;
 }
 
 
 bool DIALOG AlterTagProDLG(CoTagPro& TagPro)
 {
-	
-	CoAlterTagPro dlg(TagPro,AfxGetMainWnd());
-	if (dlg.DoModal()==IDOK)
+
+	CoAlterTagPro dlg(TagPro, AfxGetMainWnd());
+	if (dlg.DoModal() == IDOK)
 	{
 		TagPro.TagAngle = dlg.m_lTagAngle;
 		TagPro.TagColor = dlg.m_lFontCor;
@@ -320,9 +320,9 @@ bool DIALOG AlterTagProDLG(CoTagPro& TagPro)
 
 bool DIALOG AlterTagStr(CString& TagStr)
 {
-	
+
 	CoAlterTagStr dlg;
-	if (dlg.DoModal()==IDOK)
+	if (dlg.DoModal() == IDOK)
 	{
 		TagStr = dlg.m_TagStr;
 		return TRUE;

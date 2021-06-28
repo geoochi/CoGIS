@@ -16,10 +16,10 @@
 #include <_CoArea.h>
 using namespace std;
 
-class Overall CoTopo:public CoBaseTool  
+class Overall CoTopo :public CoBaseTool
 {
 public:
-	CoTopo(CView* ptView,CoDB DB,CString ActiveTB,int Style,CoScreen Screen);
+	CoTopo(CView* ptView, CoDB DB, CString ActiveTB, int Style, CoScreen Screen);
 	virtual ~CoTopo();
 	static vector<MyTopo> m_TopoObject;
 	void MyAllTopo(vector<MyTopo>TopoObject);
@@ -30,33 +30,33 @@ private:
 	CoDB m_DB;
 	CString m_ActiveTB;
 	bool m_Selected;
-	
+
 	vector<CoPnt>m_line;
 	CoSelectLine m_SelectLine;
-	
+
 	CoPnt m_Point;
 	SelectPoint m_SelectPnt;
-	
-	
+
+
 	CoPnt m_ptOrigin;
 	CoSelectPoly m_SelectePoly;
-	
+
 	int m_SelectStyle;
 	CoScreen m_Screen;
 };
 
 //放大
-class Overall CoZoonIn:public CoBaseTool
+class Overall CoZoonIn :public CoBaseTool
 {
 public:
 	CoZoonIn();
-	CoZoonIn(CView* ptView,CoScreen Screen);
+	CoZoonIn(CView* ptView, CoScreen Screen);
 	~CoZoonIn();
 	void LButtonDown(UINT nFlags, CoPnt point);
 	void LButtonUp(UINT nFlags, CoPnt point);
 	void MouseMove(UINT nFlags, CoPnt point);
-	void VPtoDP(long x,long y,double *X,double *Y);
-	void DPtoVP(double x,double y,int* X,int* Y);
+	void VPtoDP(long x, long y, double* X, double* Y);
+	void DPtoVP(double x, double y, int* X, int* Y);
 private:
 	CoPnt m_PtOrigin;
 	CoPnt m_perPoint;
@@ -67,30 +67,30 @@ public:
 
 
 //缩小
-class Overall CoZoonOut:public CoBaseTool
+class Overall CoZoonOut :public CoBaseTool
 {
-public: 
+public:
 	CoZoonOut();
-	CoZoonOut(CView* ptView,CoScreen Screen);
+	CoZoonOut(CView* ptView, CoScreen Screen);
 	~CoZoonOut();
 	void LButtonDown(UINT nFlags, CoPnt point);
-	void VPtoDP(long x,long y,double *X,double *Y);
+	void VPtoDP(long x, long y, double* X, double* Y);
 public:
 	static CoScreen m_Screen;
 };
 
 
 //移动
-class Overall CoPan:public CoBaseTool
+class Overall CoPan :public CoBaseTool
 {
 public:
 	CoPan();
-	CoPan(CView* ptView,CoScreen Screen);
+	CoPan(CView* ptView, CoScreen Screen);
 	~CoPan();
 	void LButtonDown(UINT nFlags, CoPnt point);
 	void MouseMove(UINT nFlags, CoPnt point);
 	void LButtonUp(UINT nFlags, CoPnt point);
-	void VPtoDP(long x,long y,double *X,double *Y);
+	void VPtoDP(long x, long y, double* X, double* Y);
 private:
 	CoPnt m_PtOrigin;
 	bool m_bDraw;
@@ -98,10 +98,10 @@ public:
 	static CoScreen m_Screen;
 };
 
-class Overall CoZoom:public CoBaseTool
+class Overall CoZoom :public CoBaseTool
 {
 public:
-	CoZoom(CView* ptView,CoScreen Screen);
+	CoZoom(CView* ptView, CoScreen Screen);
 	~CoZoom();
 	void MouseWheel(UINT nFlags, short zDelta, CoPnt pt);
 public:
