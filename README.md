@@ -29,6 +29,6 @@ CoGIS
     - bin （可执行程序目录，编译后生成在此）
     - CoGIS （主工程目录）
     - Include （在 vs 中运行时调用）
-    - workpath （点线面存放处）
+    - GIS_File（点线面存放处）
     - bin.7z（可执行文件压缩包）
     - CoGIS.sln （解决方案文件）
