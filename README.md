@@ -10,6 +10,7 @@ Visual Studio 2019 打开
 ========
 使用 vs2019 打开需要安装
 1. MSVC v142 - VS 2019 C++ x64/x86 生成工具(最新)
+2. Windows 10 SDK (10.0.19041.0)
 
 工程文档说明
 ========
@@ -21,13 +22,9 @@ CoGIS
 - CoGISSource
   - 其他工程目录
   - CoGIS 主工程目录
-    - bin 可执行程序目录
-    - CoGIS 主工程目录
-    - Include 在 vs 中运行时使用
-    - workpath 点线面存放处
-    - CoGIS.sln 解决方案文件
-
-注意，由于程序中相对路径的关系：
-1. 无论是在 vs 还是在 bin 中运行，点线面文件都必须放在 workpath 文件夹下；
-2. workpath 这一文件夹名不能改；
-3. bin、CoGIS、workpath 这三者位于同一目录下
+    - bin （可执行程序目录，编译后生成在此）
+    - CoGIS （主工程目录）
+    - Include （在 vs 中运行时调用）
+    - workpath （点线面存放处）
+    - bin.7z（可执行文件压缩包）
+    - CoGIS.sln （解决方案文件）

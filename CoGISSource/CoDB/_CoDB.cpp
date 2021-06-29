@@ -5,7 +5,7 @@
 #pragma comment (lib,"Ws2_32.lib")
 
 CString DBIP;
-CString workpath;
+//CString workpath;//取消固定的工作空间
 CoConnect::CoConnect()
 {
 }
@@ -79,7 +79,8 @@ CoFeatureset::~CoFeatureset()
 //成功打开返回1，否则返回0
 long CoFeatureset::Open(CoConnect* pt, CString& name)
 {
-	m_tablename = workpath + name;
+	//m_tablename = workpath + name;//取消固定的工作空间
+	m_tablename = name;// 改为绝对位置
 	return 1;//自己加的  返回为真
 }
 

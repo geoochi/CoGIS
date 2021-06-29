@@ -90,7 +90,7 @@ BOOL CCoGISApp::InitInstance()
 	m_DB.szPassword = _T("Sailor_9066");
 	DBIP = m_DB.szIP;
 	//*********下面是文件系统**************
-	workpath = _T("..\\workpath\\");
+	//workpath = _T("..\\workpath\\"); //取消固定的工作空间
 	//***************************************
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，

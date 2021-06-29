@@ -13,7 +13,7 @@ using namespace ADOBS;
 #include "CoStructClass.h"
 #include "Draw.h"
 CoDBOper extern CString DBIP;
-CoDBOper extern CString workpath;
+//CoDBOper extern CString workpath;//取消固定的工作空间
 class  CoDBOper CoConnect
 {
 public:

@@ -304,7 +304,9 @@ void CDBView::OnLoadDB()
 		NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON||"));
 	if (fileDialog.DoModal() == IDOK)
 	{
-		filename = fileDialog.GetFileName();
+		//filename = fileDialog.GetFileName();
+		filename = fileDialog.GetPathName();// 改为绝对位置
+
 		//如果是点文件
 		if (fileDialog.GetFileExt() == _T("COP"))
 		{
