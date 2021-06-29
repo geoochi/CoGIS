@@ -214,94 +214,146 @@ void CDBView::OnNewPnt()
 	CMainFrame*   pMainFrm   =   (CMainFrame*)AfxGetMainWnd();
 	pMainFrm-> GetActiveView()->Invalidate(TRUE);*/
 	//CCoGISView *p=(CCoGISView*)(this->GetActiveWindow());
-	CoConnect conn;
-	GetConnect(conn);
-	CoFeatureset DBFeatureset;
-	if (NewPointDoc(&m_ProjectItem))
+
+	CString filename;
+
+	CFileDialog fileDialog(TRUE, _T("点文件(*.COP)|*.COP"),
+		NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("点文件(*.COP)|*.COP||"));
+	if (fileDialog.DoModal() == IDOK)
 	{
-		m_ProjectItem = m_ProjectItem + _T(".COP");
-		if (DBFeatureset.Open(&conn, m_ProjectItem))
+		//filename = fileDialog.GetFileName();
+		filename = fileDialog.GetPathName();// 改为绝对位置
+
+		//如果是点文件
+		if (fileDialog.GetFileExt() == _T("COP"))
 		{
-			if (DBFeatureset.NewTable(1))
+			CoConnect conn;
+			GetConnect(conn);
+			CoFeatureset DBFeatureset;
+
+			m_ProjectItem = filename;
+			if (DBFeatureset.Open(&conn, m_ProjectItem))
 			{
-				HTREEITEM NewItem = m_wndFileView.InsertItem(m_ProjectItem, 1, 1, hRoot);
-				AddTables(m_ProjectItem, false, false, _T("COP"));
-				m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
+				if (DBFeatureset.NewTable(1))
+				{
+					HTREEITEM NewItem = m_wndFileView.InsertItem(m_ProjectItem, 1, 1, hRoot);
+					AddTables(m_ProjectItem, false, false, _T("COP"));
+					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
+				}
 			}
+
+			DBFeatureset.Close();
 		}
 	}
-	DBFeatureset.Close();
+
+
 }
 //新建线文件
 void CDBView::OnNewLine()
 {
-	CoConnect conn;
-	GetConnect(conn);
-	CoFeatureset DBFeatureset;
-	if (NewLineDoc(&m_ProjectItem))
+	CString filename;
+
+	CFileDialog fileDialog(TRUE, _T("线文件(*.COL)|*.COL|"),
+		NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("线文件(*.COL)|*.COL||"));
+	if (fileDialog.DoModal() == IDOK)
 	{
-		m_ProjectItem = m_ProjectItem + _T(".COL");
-		if (DBFeatureset.Open(&conn, m_ProjectItem))
+		//filename = fileDialog.GetFileName();
+		filename = fileDialog.GetPathName();// 改为绝对位置
+
+		//如果是线文件
+		if (fileDialog.GetFileExt() == _T("COL"))
 		{
-			if (DBFeatureset.NewTable(2))
+			CoConnect conn;
+			GetConnect(conn);
+			CoFeatureset DBFeatureset;
+			m_ProjectItem = filename;
+			if (DBFeatureset.Open(&conn, m_ProjectItem))
 			{
-				HTREEITEM NewItem = m_wndFileView.InsertItem(m_ProjectItem, 2, 2, hRoot);
-				AddTables(m_ProjectItem, false, false, _T("COL"));
-				m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
+				if (DBFeatureset.NewTable(2))
+				{
+					HTREEITEM NewItem = m_wndFileView.InsertItem(m_ProjectItem, 2, 2, hRoot);
+					AddTables(m_ProjectItem, false, false, _T("COL"));
+					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
+				}
 			}
+			DBFeatureset.Close();
 		}
 	}
-	DBFeatureset.Close();
+
 }
 //新建区文件
 void CDBView::OnNewArea()
 {
-	CoConnect conn;
-	GetConnect(conn);
-	CoFeatureset DBFeatureset;
-	if (NewPolyDoc(&m_ProjectItem))
+	CString filename;
+
+	CFileDialog fileDialog(TRUE, _T("区文件(*.COA)|*.COA"),
+		NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("区文件(*.COA)|*.COA||"));
+	if (fileDialog.DoModal() == IDOK)
 	{
-		m_ProjectItem = m_ProjectItem + _T(".COA");
-		if (DBFeatureset.Open(&conn, m_ProjectItem))
+		//filename = fileDialog.GetFileName();
+		filename = fileDialog.GetPathName();// 改为绝对位置
+
+		//如果是区文件
+		if (fileDialog.GetFileExt() == _T("COA"))
 		{
-			if (DBFeatureset.NewTable(3))
+			CoConnect conn;
+			GetConnect(conn);
+			CoFeatureset DBFeatureset;
+			m_ProjectItem = filename;
+			if (DBFeatureset.Open(&conn, m_ProjectItem))
 			{
-				HTREEITEM NewItem = m_wndFileView.InsertItem(m_ProjectItem, 3, 3, hRoot);
-				AddTables(m_ProjectItem, false, false, _T("COA"));
-				m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
+				if (DBFeatureset.NewTable(3))
+				{
+					HTREEITEM NewItem = m_wndFileView.InsertItem(m_ProjectItem, 3, 3, hRoot);
+					AddTables(m_ProjectItem, false, false, _T("COA"));
+					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
+				}
 			}
+			DBFeatureset.Close();
 		}
 	}
-	DBFeatureset.Close();
+
 }
 //新建注释文件
 void CDBView::OnNewNote()
 {
-	CoConnect conn;
-	GetConnect(conn);
-	CoFeatureset DBFeatureset;
-	if (NewTagDoc(&m_ProjectItem))
+	CString filename;
+
+	CFileDialog fileDialog(TRUE, _T("注释文件(*.CON)|*.CON"),
+		NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("注释文件(*.CON)|*.CON||"));
+	if (fileDialog.DoModal() == IDOK)
 	{
-		m_ProjectItem = m_ProjectItem + ".CON";
-		if (DBFeatureset.Open(&conn, m_ProjectItem))
+		//filename = fileDialog.GetFileName();
+		filename = fileDialog.GetPathName();// 改为绝对位置
+
+		//如果是注释文件
+		if (fileDialog.GetFileExt() == _T("CON"))
 		{
-			if (DBFeatureset.NewTable(4))
+			CoConnect conn;
+			GetConnect(conn);
+			CoFeatureset DBFeatureset;
+			m_ProjectItem = filename;
+			if (DBFeatureset.Open(&conn, m_ProjectItem))
 			{
-				HTREEITEM NewItem = m_wndFileView.InsertItem(m_ProjectItem, 4, 4, hRoot);
-				AddTables(m_ProjectItem, false, false, _T("CON"));
-				m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
+				if (DBFeatureset.NewTable(4))
+				{
+					HTREEITEM NewItem = m_wndFileView.InsertItem(m_ProjectItem, 4, 4, hRoot);
+					AddTables(m_ProjectItem, false, false, _T("CON"));
+					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
+				}
 			}
+			DBFeatureset.Close();
 		}
 	}
-	DBFeatureset.Close();
+
 }
 //从数据库载入文件
 void CDBView::OnLoadDB()
 {
 	CString filename;
 
-	CFileDialog fileDialog(TRUE, _T("点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON"),
-		NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON||"));
+	CFileDialog fileDialog(TRUE, _T("所有文件(*.*)|*.*"),
+		NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("所有文件(*.*)|*.*||"));
 	if (fileDialog.DoModal() == IDOK)
 	{
 		//filename = fileDialog.GetFileName();

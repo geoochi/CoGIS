@@ -245,58 +245,58 @@ bool DIALOG PolyGonPro(CoPolyPro& PolygonPro)
 
 //================================================
 //新建点文件
-bool DIALOG NewPointDoc(CString* PntName)
-{
-
-	CoNewPntDlg newPoint;
-	if (newPoint.DoModal() == IDOK)
-	{
-		*PntName = newPoint.m_PntName;
-		return TRUE;
-	}
-	return FALSE;
-}
+//bool DIALOG NewPointDoc(CString* PntName)
+//{
+//
+//	CoNewPntDlg newPoint;
+//	if (newPoint.DoModal() == IDOK)
+//	{
+//		*PntName = newPoint.m_PntName;
+//		return TRUE;
+//	}
+//	return FALSE;
+//}
 
 //=================================================
 //新建线文件
-bool DIALOG NewLineDoc(CString* LineName)
-{
-
-	CoNewLineDlg NewLine;
-	if (NewLine.DoModal() == IDOK)
-	{
-		*LineName = NewLine.m_NewLine;
-		return TRUE;
-	}
-	return FALSE;
-}
+//bool DIALOG NewLineDoc(CString* LineName)
+//{
+//
+//	CoNewLineDlg NewLine;
+//	if (NewLine.DoModal() == IDOK)
+//	{
+//		*LineName = NewLine.m_NewLine;
+//		return TRUE;
+//	}
+//	return FALSE;
+//}
 
 //==================================================
 //新建区文件
-bool DIALOG NewPolyDoc(CString* PolyName)
-{
-
-	CoNewPolyDlg NewPoly;
-	if (NewPoly.DoModal() == IDOK)
-	{
-		*PolyName = NewPoly.m_NewPolyItem;
-		return TRUE;
-	}
-	return FALSE;
-}
+//bool DIALOG NewPolyDoc(CString* PolyName)
+//{
+//
+//	CoNewPolyDlg NewPoly;
+//	if (NewPoly.DoModal() == IDOK)
+//	{
+//		*PolyName = NewPoly.m_NewPolyItem;
+//		return TRUE;
+//	}
+//	return FALSE;
+//}
 
 //新建字体文件
-bool DIALOG NewTagDoc(CString* TagName)
-{
-
-	CoNewTagDlg NewTag;
-	if (NewTag.DoModal() == IDOK)
-	{
-		*TagName = NewTag.m_TagName;
-		return TRUE;
-	}
-	return FALSE;
-}
+//bool DIALOG NewTagDoc(CString* TagName)
+//{
+//
+//	CoNewTagDlg NewTag;
+//	if (NewTag.DoModal() == IDOK)
+//	{
+//		*TagName = NewTag.m_TagName;
+//		return TRUE;
+//	}
+//	return FALSE;
+//}
 
 
 bool DIALOG AlterTagProDLG(CoTagPro& TagPro)

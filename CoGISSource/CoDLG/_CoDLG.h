@@ -42,18 +42,18 @@ bool DIALOG PolyGonPro(CoPolyPro& PolygonPro);
 
 //================================================
 //新建点文件
-bool DIALOG NewPointDoc(CString* PntName);
+//bool DIALOG NewPointDoc(CString* PntName);
 
 //=================================================
 //新建线文件
-bool DIALOG NewLineDoc(CString* LineName);
+//bool DIALOG NewLineDoc(CString* LineName);
 
 //==================================================
 //新建区文件
-bool DIALOG NewPolyDoc(CString* PolyName);
+//bool DIALOG NewPolyDoc(CString* PolyName);
 //==================================================
 //新建区文件
-bool DIALOG NewTagDoc(CString* TagName);
+//bool DIALOG NewTagDoc(CString* TagName);
 
 
 bool DIALOG AlterTagProDLG(CoTagPro& TagPro);
