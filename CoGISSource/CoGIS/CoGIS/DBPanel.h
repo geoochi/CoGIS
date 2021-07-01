@@ -54,6 +54,7 @@ protected:
 	afx_msg void OnCloseItem();//关闭文件
 	afx_msg void OnActiveItem();//激活文件
 	afx_msg void OnDelItem();//删除文件
+	afx_msg void OnSaveGeojsonItem();
 	afx_msg void OnLoadDB();//从数据库中载入文件
 	DECLARE_MESSAGE_MAP()
 

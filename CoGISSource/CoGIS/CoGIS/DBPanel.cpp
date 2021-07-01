@@ -34,6 +34,7 @@ BEGIN_MESSAGE_MAP(CDBView, CDockablePane)
 	ON_COMMAND(ID_CLOSE_ITEM, OnCloseItem)//关闭文件
 	ON_COMMAND(ID_ITEM_ACITIVE, OnActiveItem)//激活文件
 	ON_COMMAND(ID_DEL_ITEM, OnDelItem)//删除文件
+	ON_COMMAND(ID_SAVEGEOJSON_ITEM, OnSaveGeojsonItem)//保存Geojson文件
 	ON_COMMAND(ID_Load_DB, OnLoadDB)//从数据库载入文件
 END_MESSAGE_MAP()
 
@@ -352,8 +353,8 @@ void CDBView::OnLoadDB()
 {
 	CString filename;
 
-	CFileDialog fileDialog(TRUE, _T("所有文件(*.*)|*.*"),
-		NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("所有文件(*.*)|*.*||"));
+	CFileDialog fileDialog(TRUE, _T("点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON|所有文件(*.*)|*.*"),
+		NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON|所有文件(*.*)|*.*||"));
 	if (fileDialog.DoModal() == IDOK)
 	{
 		//filename = fileDialog.GetFileName();
@@ -377,7 +378,7 @@ void CDBView::OnLoadDB()
 			DBFeatureset.Close();
 		}
 		//如果是线文件
-		if (fileDialog.GetFileExt() == _T("COL"))
+		else if (fileDialog.GetFileExt() == _T("COL"))
 		{
 			CoConnect conn;
 			GetConnect(conn);
@@ -394,7 +395,7 @@ void CDBView::OnLoadDB()
 			DBFeatureset.Close();
 		}
 		//如果是区文件
-		if (fileDialog.GetFileExt() == _T("COA"))
+		else if (fileDialog.GetFileExt() == _T("COA"))
 		{
 			CoConnect conn;
 			GetConnect(conn);
@@ -411,7 +412,7 @@ void CDBView::OnLoadDB()
 			DBFeatureset.Close();
 		}
 		//如果是注释文件
-		if (fileDialog.GetFileExt() == _T("CON"))
+		else if (fileDialog.GetFileExt() == _T("CON"))
 		{
 			CoConnect conn;
 			GetConnect(conn);
@@ -427,6 +428,8 @@ void CDBView::OnLoadDB()
 			}
 			DBFeatureset.Close();
 		}
+		else
+			AfxMessageBox("请打开标准的点线面文件！");
 	}
 }
 /*=========end 工程操作菜单==========*/
@@ -509,6 +512,17 @@ void CDBView::OnDelItem()
 	//刷新显示
 	CMainFrame* pMainFrm = (CMainFrame*)AfxGetMainWnd();
 	pMainFrm->GetActiveView()->Invalidate(TRUE);
+}
+//保存Geojson文件
+void CDBView::OnSaveGeojsonItem()
+{
+	CString TableName = m_wndFileView.GetItemText(tempItem);
+	CoConnect conn;
+	GetConnect(conn);
+	CoFeatureset DBFeatureset;
+	DBFeatureset.Open(&conn, TableName);
+	DBFeatureset.ReadFileMy();
+	DBFeatureset.SaveGeojsonMy();
 }
 /*=========end 单文件操作===========*/
 

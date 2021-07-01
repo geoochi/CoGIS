@@ -61,7 +61,7 @@ public:
 	void GetTime(CString& time);//获取当地时间
 	long GetMaxID(CString& TableName);
 	long GetMaxID();
-	long GteCount();
+	long GetCount();
 
 	//按照空间坐标得到符合的ID系列
 	int GetAllID(CoRect& rc, vector<long>& ID);
@@ -70,11 +70,12 @@ public:
 
 	long GetID(CString Item);
 
-	long  NewTable(int index);
+	long NewTable(int index);
 	long DelTable(CString TableName);
 
 	void ReadFileMy();
 	void SaveFileMy();
+	void SaveGeojsonMy();
 
 	//把文件存入数据库
 	long SaveFileToDB(CString FilePathName, long ID);

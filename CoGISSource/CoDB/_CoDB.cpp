@@ -2,6 +2,7 @@
 #include "_CoDB.h"
 #include <_CoLogic.h>
 #include <Winsock2.h>
+#include <fstream>
 #pragma comment (lib,"Ws2_32.lib")
 
 CString DBIP;
@@ -192,7 +193,7 @@ long CoFeatureset::GetMaxID()
 	return ID;
 }
 
-long CoFeatureset::GteCount()
+long CoFeatureset::GetCount()
 {
 	return 1;
 }
@@ -784,6 +785,191 @@ void CoFeatureset::SaveFileMy()
 	ar.Close();
 	file.Close();
 }
+
+void WritePointMy(ofstream& ofs, CoPointTemp pntTemp)
+{
+	/**/ofs << "{"
+	/*        */<< "\"type\":\"Feature\",\"properties\":"
+	/*        */<< "{"
+    /*            */<< "\"PntID\":"    << pntTemp.m_pointpro.PntID    << ","
+    /*            */<< "\"PntRadio\":" << pntTemp.m_pointpro.PntRadio << ","
+	/*            */<< "\"PntStyle\":" << pntTemp.m_pointpro.PntStyle << ","
+	/*            */<< "\"PntColor\":" << pntTemp.m_pointpro.PntColor << ","
+	/*            */<< "\"PntLayer\":" << pntTemp.m_pointpro.PntLayer
+	/*        */<< "},\"geometry\":"
+	/*        */<< "{"
+	/*            */<< "\"type\":\"Point\",\"coordinates\":"
+	/*            */<< "["
+	/*                */<< "[" << pntTemp.m_point.x << "," << pntTemp.m_point.y << "]"
+	/*            */<< "]"
+	/*        */<< "}"
+	/*    */<< "}";
+}
+
+void WriteLineStringMy(ofstream& ofs, CoLineTemp lineTemp)
+{
+    /**/ofs << "{"
+    /*        */<< "\"type\":\"Feature\",\"properties\":"
+    /*        */<< "{"
+    /*            */<< "\"LineID\":"    << lineTemp.m_LinePro.LineID    << ","
+    /*            */<< "\"LineStyle\":" << lineTemp.m_LinePro.LineStyle << ","
+    /*            */<< "\"LineWidth\":" << lineTemp.m_LinePro.LineWidth << ","
+    /*            */<< "\"LineColor\":" << lineTemp.m_LinePro.LineColor << ","
+    /*            */<< "\"LineLayer\":" << lineTemp.m_LinePro.LineLayer << ","
+    /*            */<< "\"size\":"      << lineTemp.m_Line.size()
+    /*        */<< "},\"geometry\":"
+    /*        */<< "{"
+    /*            */<< "\"type\":\"LineString\",\"coordinates\":"
+    /*            */<< "[";
+    /*        */for(int i = 0; i < lineTemp.m_Line.size() - 1; i++)
+    /*            */ofs << "[" << lineTemp.m_Line[i].x << "," << lineTemp.m_Line[i].y << "],";
+    /*            */ofs << "[" << lineTemp.m_Line[lineTemp.m_Line.size() - 1].x << "," << lineTemp.m_Line[lineTemp.m_Line.size() - 1].y << "]";
+    /*        */ofs << "]"
+    /*        */<< "}"
+    /*    */<< "}";
+}
+
+void WritePolygonMy(ofstream& ofs, CoPolyTemp polyTemp)
+{
+	/**/ofs << "{"
+	/*        */<< "\"type\":\"Feature\",\"properties\":"
+	/*        */<< "{"
+	/*            */<< "\"PolyID\":"        << polyTemp.m_PolyPro.PolyID        << ","
+	/*            */<< "\"PolyArea\":"      << polyTemp.m_PolyPro.PolyArea      << ","
+	/*            */<< "\"PolyColor\":"     << polyTemp.m_PolyPro.PolyColor     << ","
+	/*            */<< "\"PolyFillStyle\":" << polyTemp.m_PolyPro.PolyFillStyle << ","
+	/*            */<< "\"PolyStyle\":"     << polyTemp.m_PolyPro.PolyStyle     << ","
+	/*            */<< "\"PolyLayer\":"     << polyTemp.m_PolyPro.PolyLayer     << ","
+	/*            */<< "\"size\":"          << polyTemp.m_Poly.size()
+	/*        */<< "},\"geometry\":"
+	/*        */<< "{"
+	/*            */<< "\"type\":\"Polygon\",\"coordinates\":"
+	/*            */<< "[";
+	/*        */for (int i = 0; i < polyTemp.m_Poly.size() - 1; i++)
+	/*            */ofs << "[" << polyTemp.m_Poly[i].x << "," << polyTemp.m_Poly[i].y << "],";
+	/*            */ofs << "[" << polyTemp.m_Poly[polyTemp.m_Poly.size() - 1].x << "," << polyTemp.m_Poly[polyTemp.m_Poly.size() - 1].y << "]";
+	/*        */ofs << "]"
+	/*        */<< "}"
+	/*    */<< "}";
+}
+
+void WriteTagMy(ofstream& ofs, CoTagTemp tagTemp)
+{
+	/**/ofs << "{"
+	/*        */<< "\"type\":\"Feature\",\"properties\":"
+	/*        */<< "{"
+	/*            */<< "\"ID\":"         << tagTemp.m_tagpro.ID         << ","
+	/*            */<< "\"TagAngle\":"   << tagTemp.m_tagpro.TagAngle   << ","
+	/*            */<< "\"TagColor\":"   << tagTemp.m_tagpro.TagColor   << ","
+	/*            */<< "\"TagFont\":\""  << tagTemp.m_tagpro.TagFont    << "\","
+	/*            */<< "\"TagHeight\":"  << tagTemp.m_tagpro.TagHeight  << ","
+	/*            */<< "\"TagLayer\":"   << tagTemp.m_tagpro.TagLayer   << ","
+	/*            */<< "\"TagOffsite\":" << tagTemp.m_tagpro.TagOffsite << ","
+	/*            */<< "\"TagStr\":\""   << tagTemp.m_tagpro.TagStr     << "\","
+	/*            */<< "\"TagWidth\":"   << tagTemp.m_tagpro.TagWidth   << ","
+	/*            */<< "\"TextAngle\":"  << tagTemp.m_tagpro.TextAngle
+	/*        */<< "},\"geometry\":"
+	/*        */<< "{"
+	/*            */<< "\"type\":\"Tag\",\"coordinates\":"
+	/*            */<< "["
+	/*                */<< "[" << tagTemp.m_Point.x << "," << tagTemp.m_Point.y << "]"
+	/*            */<< "]"
+	/*        */<< "}"
+	/*    */<< "}";
+}
+
+
+void CoFeatureset::SaveGeojsonMy()
+{
+	int Size = 0;
+	CString str = m_tablename.Right(4);
+	if (str == ".COP")
+	{
+		Size = m_Point.size();
+		if (Size == 0)
+		{
+			AfxMessageBox("保存失败，文件不能为空！");
+			return;
+		}
+		CString filepath = m_tablename.Left(m_tablename.GetLength() - 4);
+		std::ofstream ofs(filepath + "_point.geojson");
+		ofs << "{\"type\":\"FeatureCollection\",\"features\":[";
+		for (int i = 0; i < Size - 1; i++)
+		{
+			WritePointMy(ofs, m_Point[i]);
+			ofs << ",";
+		}
+		WritePointMy(ofs, m_Point[Size - 1]);
+		ofs << "]}";
+		ofs.close();
+		AfxMessageBox("Point保存成功！");
+	}
+	else if (str == ".COL")
+	{
+		Size = m_Line.size();
+		if (Size == 0)
+		{
+			AfxMessageBox("保存失败，文件不能为空！");
+			return;
+		}
+		CString filepath = m_tablename.Left(m_tablename.GetLength() - 4);
+		std::ofstream ofs(filepath + "_line.geojson");
+		ofs << "{\"type\":\"FeatureCollection\",\"features\":[";
+		for (int i = 0; i < Size - 1; i++)
+		{
+			WriteLineStringMy(ofs, m_Line[i]);
+			ofs << ",";
+		}
+		WriteLineStringMy(ofs, m_Line[Size - 1]);
+		ofs << "]}";
+		ofs.close();
+		AfxMessageBox("LineString保存成功！");
+	}
+	else if (str == ".COA")
+	{
+		Size = m_Poly.size();
+		if (Size == 0)
+		{
+			AfxMessageBox("保存失败，文件不能为空！");
+			return;
+		}
+		CString filepath = m_tablename.Left(m_tablename.GetLength() - 4);
+		std::ofstream ofs(filepath + "_polygon.geojson");
+		ofs << "{\"type\":\"FeatureCollection\",\"features\":[";
+		for (int i = 0; i < Size - 1; i++)
+		{
+			WritePolygonMy(ofs, m_Poly[i]);
+			ofs << ",";
+		}
+		WritePolygonMy(ofs, m_Poly[Size - 1]);
+		ofs << "]}";
+		ofs.close();
+		AfxMessageBox("Polygon保存成功！");
+
+	}
+	else if (str == ".CON")
+	{
+		Size = m_Tag.size();
+		if (Size == 0)
+		{
+			AfxMessageBox("保存失败，文件不能为空！");
+			return;
+		}
+		CString filepath = m_tablename.Left(m_tablename.GetLength() - 4);
+		std::ofstream ofs(filepath + "_tag.geojson");
+		ofs << "{\"type\":\"FeatureCollection\",\"features\":[";
+		for (int i = 0; i < Size - 1; i++)
+		{
+			WriteTagMy(ofs, m_Tag[i]);
+			ofs << ",";
+		}
+		WriteTagMy(ofs, m_Tag[Size - 1]);
+		ofs << "]}";
+		ofs.close();
+		AfxMessageBox("注释文件保存成功！");
+	}
+}
+
 void CoFeatureset::ReadFileMy()
 {
 	int length;
@@ -793,7 +979,7 @@ void CoFeatureset::ReadFileMy()
 	CArchive ar(&file, CArchive::load);
 	if (str == ".COP")
 	{
-		if (m_Line.size())
+		if (m_Point.size())
 			m_Point.clear();
 		CoPnt pnt;
 		CoPntPro pntpro;
@@ -820,7 +1006,7 @@ void CoFeatureset::ReadFileMy()
 			m_Point.push_back(MyPoint);
 		}
 	}
-	if (str == ".COL")
+	else if (str == ".COL")
 	{
 		if (m_Line.size())
 			m_Line.clear();
@@ -858,7 +1044,7 @@ void CoFeatureset::ReadFileMy()
 		}
 
 	}
-	if (str == ".COA")
+	else if (str == ".COA")
 	{
 		if (m_Poly.size())
 			m_Poly.clear();
@@ -896,7 +1082,7 @@ void CoFeatureset::ReadFileMy()
 			poly.clear();
 		}
 	}
-	if (str == ".CON")
+	else if (str == ".CON")
 	{
 		if (m_Tag.size())
 			m_Tag.clear();
