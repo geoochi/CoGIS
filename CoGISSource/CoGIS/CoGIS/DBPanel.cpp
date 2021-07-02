@@ -6,6 +6,13 @@
 #include "CoGIS.h"
 #include "DataExchange.h"//数据通讯
 #include "_CoDLG.h"//对话框头文件
+
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <regex>
+using namespace std;
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
@@ -210,12 +217,6 @@ void CDBView::OnChangeVisualStyle()
 //新建点文件
 void CDBView::OnNewPnt()
 {
-	//AfxMessageBox(_T("新建点文件"));
-	/*setTemp(2);
-	CMainFrame*   pMainFrm   =   (CMainFrame*)AfxGetMainWnd();
-	pMainFrm-> GetActiveView()->Invalidate(TRUE);*/
-	//CCoGISView *p=(CCoGISView*)(this->GetActiveWindow());
-
 	CString filename;
 
 	CFileDialog fileDialog(TRUE, _T("点文件(*.COP)|*.COP"),
@@ -242,8 +243,10 @@ void CDBView::OnNewPnt()
 					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
 				}
 			}
-
 			DBFeatureset.Close();
+
+			// 展开根目录
+			m_wndFileView.Expand(hRoot, TVE_EXPAND);
 		}
 	}
 
@@ -278,6 +281,10 @@ void CDBView::OnNewLine()
 				}
 			}
 			DBFeatureset.Close();
+
+			// 展开根目录
+			m_wndFileView.Expand(hRoot, TVE_EXPAND);
+
 		}
 	}
 
@@ -311,6 +318,10 @@ void CDBView::OnNewArea()
 				}
 			}
 			DBFeatureset.Close();
+
+			// 展开根目录
+			m_wndFileView.Expand(hRoot, TVE_EXPAND);
+
 		}
 	}
 
@@ -344,92 +355,307 @@ void CDBView::OnNewNote()
 				}
 			}
 			DBFeatureset.Close();
+
+			// 展开根目录
+			m_wndFileView.Expand(hRoot, TVE_EXPAND);
 		}
 	}
 
 }
+
+void CDBView::OnLoadFile(CString filename, CString fileExt)
+{
+	int nImage, nSelectedImage;
+	if (fileExt == _T("COP"))
+		nImage = nSelectedImage = 1;
+	else if (fileExt == _T("COL"))
+		nImage = nSelectedImage = 2;
+	else if (fileExt == _T("COA"))
+		nImage = nSelectedImage = 3;
+	else if (fileExt == _T("CON"))
+		nImage = nSelectedImage = 4;
+
+	CoConnect conn;
+	GetConnect(conn);
+	CoFeatureset DBFeatureset;
+	if (DBFeatureset.Open(&conn, filename))
+	{
+		HTREEITEM NewItem = m_wndFileView.InsertItem(filename, nImage, nSelectedImage, hRoot);
+		AddTables(filename, false, false, fileExt);
+		m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
+	}
+	DBFeatureset.Close();
+
+	// 展开根目录
+	m_wndFileView.Expand(hRoot, TVE_EXPAND);
+}
+
+string replace(string src, const string old_value, const string new_value) {
+	for (string::size_type pos(0); pos != string::npos; pos += new_value.length()) {
+		if ((pos = src.find(old_value, pos)) != string::npos) {
+			src.replace(pos, old_value.length(), new_value);
+		}
+		else break;
+	}
+	return src;
+}
+
+string ClearGeojson(string src)
+{
+	src = replace(src, string(" "), string(""));
+	src = replace(src, string("\t"), string(""));
+	src = replace(src, string("\n"), string(""));
+	return src;
+}
+
+string ReadGeojson(ifstream& ifs)
+{
+	stringstream buffer;
+	buffer << ifs.rdbuf();
+	string contents(buffer.str());
+	contents = ClearGeojson(contents);
+
+	return contents;
+}
+
+void WriteCOPFile(CString filename, string geojsonString)
+{
+	regex reg(R"(\{\"type\":\"Feature\",\"properties\":\{\"PntID\":([0-9]{1,4}),\"PntRadio\":([0-9]{1,4}),\"PntStyle\":([0-9]{1,4}),\"PntColor\":([0-9]{1,4}),\"PntLayer\":([0-9]{1,4})\},\"geometry\":\{\"type\":\"Point\",\"coordinates\":\[\[([0-9]*\.*[0-9]*),([0-9]*\.*[0-9]*)\]\]\}\})");
+	sregex_iterator start(geojsonString.begin(), geojsonString.end(), reg);
+	sregex_iterator end;
+
+	CFile file;
+	file.Open(LPCTSTR(filename), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate);
+	CArchive ar(&file, CArchive::store);
+	file.SeekToEnd();
+	int ID, PntRadio, PntStyle, PntColor, PntLayer;
+	double x, y;
+	for (sregex_iterator it = start; it != end; ++it)
+	{
+		ID       = atoi((*it)[1].str().c_str());
+		PntRadio = atoi((*it)[2].str().c_str());
+		PntStyle = atoi((*it)[3].str().c_str());
+		PntColor = atoi((*it)[4].str().c_str());
+		PntLayer = atoi((*it)[5].str().c_str());
+		x        = atof((*it)[6].str().c_str());
+		y        = atof((*it)[7].str().c_str());
+		ar << ID << PntRadio << PntStyle << PntColor << PntLayer;
+		ar << x << y;
+	}
+	ar.Close();
+	file.Close();
+}
+
+void WriteCOLFile(CString filename, string geojsonString)
+{
+	vector<vector<string>>lineProList{};
+	vector<string>lineXYList{};
+	int lineCount = 0;
+
+	regex reg(R"(\{\"type\":\"Feature\",\"properties\":\{\"LineID\":([0-9]{1,4}),\"LineStyle\":([0-9]{1,4}),\"LineWidth\":([0-9]{1,4}),\"LineColor\":([0-9]{1,10}),\"LineLayer\":([0-9]{1,4}),\"size\":([0-9]{1,4})\},\"geometry\":\{\"type\":\"LineString\",\"coordinates\":\[((\[([0-9]*\.*[0-9]*),([0-9]*\.*[0-9]*)\])*,*)*\]\}\})");
+	sregex_iterator start(geojsonString.begin(), geojsonString.end(), reg);
+	sregex_iterator end;
+	for (sregex_iterator it = start; it != end; ++it)
+	{
+		++lineCount;
+		vector<string>linePro{};
+		for (int i = 1; i <= 6; i++)
+			linePro.push_back((*it)[i].str());
+		lineProList.push_back(linePro);
+	}
+	regex reg2(R"(\[((\[([0-9]*\.*[0-9]*),([0-9]*\.*[0-9]*)\])*,*)*\])");
+	sregex_iterator start2(geojsonString.begin(), geojsonString.end(), reg2);
+	sregex_iterator end2;
+	for (sregex_iterator it2 = start2; it2 != end2; ++it2)
+		lineXYList.push_back((*it2)[0].str());
+
+	CFile file;
+	file.Open(LPCTSTR(filename), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate);
+	CArchive ar(&file, CArchive::store);
+	file.SeekToEnd();
+	int ID, LineStyle, LineWidth, LineColor, LineLayer, linenum;
+	double x, y;
+
+	bool flag;
+	for (int num = 0; num < lineCount; num++)
+	{
+		ID        = atoi(lineProList[num][0].c_str());
+		LineStyle = atoi(lineProList[num][1].c_str());
+		LineWidth = atoi(lineProList[num][2].c_str());
+		LineColor = atoi(lineProList[num][3].c_str());
+		LineLayer = atoi(lineProList[num][4].c_str());
+		linenum   = atoi(lineProList[num][5].c_str());
+		ar << ID << LineStyle << LineWidth << LineColor << LineLayer << linenum;
+
+		regex reg3(R"(([0-9]*\.*[0-9]*),([0-9]*\.*[0-9]*))");
+		sregex_iterator start3(lineXYList[num].begin(), lineXYList[num].end(), reg3);
+		sregex_iterator end3;
+
+		flag = true;
+		for (sregex_iterator it3 = start3; it3 != end3; ++it3)
+			if (flag)
+			{
+				flag = false;
+				x = atof((*it3)[1].str().c_str());
+				y = atof((*it3)[2].str().c_str());
+				ar << x << y;
+			}
+			else
+				flag = true;
+	}
+	ar.Close();
+	file.Close();
+}
+
+void WriteCOAFile(CString filename, string geojsonString)
+{
+	vector<vector<string>>polyProList{};
+	vector<string>polyXYList{};
+	int polyCount = 0;
+
+	regex reg(R"(\{\"type\":\"Feature\",\"properties\":\{\"PolyID\":([0-9]{1,4}),\"PolyArea\":([0-9]{1,4}),\"PolyColor\":([0-9]{1,10}),\"PolyFillStyle\":([0-9]{1,4}),\"PolyStyle\":([0-9]{1,4}),\"PolyLayer\":([0-9]{1,4}),\"size\":([0-9]{1,4})\},\"geometry\":\{\"type\":\"Polygon\",\"coordinates\":\[((\[([0-9]*\.*[0-9]*),([0-9]*\.*[0-9]*)\])*,*)*\]\}\})");
+	sregex_iterator start(geojsonString.begin(), geojsonString.end(), reg);
+	sregex_iterator end;
+	for (sregex_iterator it = start; it != end; ++it)
+	{
+		++polyCount;
+		vector<string>polyPro{};
+		for (int i = 1; i <= 7; i++)
+			polyPro.push_back((*it)[i].str());
+		polyProList.push_back(polyPro);
+	}
+	regex reg2(R"(\[((\[([0-9]*\.*[0-9]*),([0-9]*\.*[0-9]*)\])*,*)*\])");
+	sregex_iterator start2(geojsonString.begin(), geojsonString.end(), reg2);
+	sregex_iterator end2;
+	for (sregex_iterator it2 = start2; it2 != end2; ++it2)
+		polyXYList.push_back((*it2)[0].str());
+
+	CFile file;
+	file.Open(LPCTSTR(filename), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate);
+	CArchive ar(&file, CArchive::store);
+	file.SeekToEnd();
+	int ID, PolyColor, PolyFillStyle, PolyStyle, PolyLayer, polynum;
+	double PolyArea, x, y;
+
+	bool flag;
+	for (int num = 0; num < polyCount; num++)
+	{
+		ID            = atoi(polyProList[num][0].c_str());
+		PolyArea      = atof(polyProList[num][1].c_str());
+		PolyColor     = atoi(polyProList[num][2].c_str());
+		PolyFillStyle = atoi(polyProList[num][3].c_str());
+		PolyStyle     = atoi(polyProList[num][4].c_str());
+		PolyLayer     = atoi(polyProList[num][5].c_str());
+		polynum       = atoi(polyProList[num][6].c_str());
+		ar << ID << PolyArea << PolyColor << PolyFillStyle << PolyStyle << PolyLayer << polynum;
+
+		regex reg3(R"(([0-9]*\.*[0-9]*),([0-9]*\.*[0-9]*))");
+		sregex_iterator start3(polyXYList[num].begin(), polyXYList[num].end(), reg3);
+		sregex_iterator end3;
+
+		flag = true;
+		for (sregex_iterator it3 = start3; it3 != end3; ++it3)
+			if (flag)
+			{
+				flag = false;
+				x = atof((*it3)[1].str().c_str());
+				y = atof((*it3)[2].str().c_str());
+				ar << x << y;
+			}
+			else
+				flag = true;
+	}
+	ar.Close();
+	file.Close();
+}
+
+void WriteCONFile(CString filename, string geojsonString)
+{
+	regex reg(R"(\{\"type\":\"Feature\",\"properties\":\{\"ID\":([0-9]{1,4}),\"TagAngle\":([0-9]{1,4}),\"TagColor\":([0-9]{1,10}),\"TagFont\":\"(\S{1,20})\",\"TagHeight\":([0-9]{1,4}),\"TagLayer\":([0-9]{1,4}),\"TagOffsite\":([0-9]{1,4}),\"TagStr\":\"(\S{1,20})\",\"TagWidth\":([0-9]{1,4}),\"TextAngle\":([0-9]{1,4})\},\"geometry\":\{\"type\":\"Tag\",\"coordinates\":\[\[([0-9]*\.*[0-9]*),([0-9]*\.*[0-9]*)\]\]\}\})");
+	sregex_iterator start(geojsonString.begin(), geojsonString.end(), reg);
+	sregex_iterator end;
+
+	CFile file;
+	file.Open(LPCTSTR(filename), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate);
+	CArchive ar(&file, CArchive::store);
+	file.SeekToEnd();
+	int ID, TagColor, TagHeight, TagLayer, TagOffsite, TagWidth;
+	float TagAngle, TextAngle;
+	CString TagFont, TagStr;
+	double x, y;
+	for (sregex_iterator it = start; it != end; ++it)
+	{
+		ID         =    atoi((*it)[1].str().c_str());
+		TagAngle   =    atof((*it)[2].str().c_str());
+		TagColor   =    atoi((*it)[3].str().c_str());
+		TagFont    = CString((*it)[4].str().c_str());
+		TagHeight  =    atoi((*it)[5].str().c_str());
+		TagLayer   =    atoi((*it)[6].str().c_str());
+		TagOffsite =    atoi((*it)[7].str().c_str());
+		TagStr     = CString((*it)[8].str().c_str());
+		TagWidth   =    atoi((*it)[9].str().c_str());
+		TextAngle  =    atof((*it)[10].str().c_str());
+		x          =    atof((*it)[11].str().c_str());
+		y          =    atof((*it)[12].str().c_str());
+		ar << ID << TagAngle << TagColor << TagFont << TagHeight << TagLayer << TagOffsite << TagStr << TagWidth << TextAngle;
+		ar << x << y;
+	}
+	ar.Close();
+	file.Close();
+}
+
+
 //从数据库载入文件
 void CDBView::OnLoadDB()
 {
-	CString filename;
-
-	CFileDialog fileDialog(TRUE, _T("点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON|所有文件(*.*)|*.*"),
-		NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON|所有文件(*.*)|*.*||"));
+	CFileDialog fileDialog(TRUE, _T("所有文件(*.*)|*.*|geojson文件(*.geojson)|*.geojson|点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON"),
+		NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("所有文件(*.*)|*.*|geojson文件(*.geojson)|*.geojson|点文件(*.COP)|*.COP|线文件(*.COL)|*.COL|区文件(*.COA)|*.COA|注释文件(*.CON)|*.CON||"));
 	if (fileDialog.DoModal() == IDOK)
 	{
-		//filename = fileDialog.GetFileName();
-		filename = fileDialog.GetPathName();// 改为绝对位置
+		//CString filename = fileDialog.GetFileName();
+		CString filename = fileDialog.GetPathName();// 改为绝对位置
+		CString fileExt = fileDialog.GetFileExt();
 
-		//如果是点文件
-		if (fileDialog.GetFileExt() == _T("COP"))
+		//如果是Geojson文件
+		if (fileExt == _T("geojson"))
 		{
-			CoConnect conn;
-			GetConnect(conn);
-			CoFeatureset DBFeatureset;
-			if (DBFeatureset.Open(&conn, filename))
+			ifstream ifs(filename);
+			string geojsonString = ReadGeojson(ifs);
+			ifs.close();
+			regex  reg(R"(\"geometry\":\{\"type\":\"(.*?)\")");
+			sregex_iterator start(geojsonString.begin(), geojsonString.end(), reg);
+			string geoType;
+			geoType = (*start)[1];
+			if (geoType == "Point")
 			{
-				if (DBFeatureset.NewTable(1))
-				{
-					HTREEITEM NewItem = m_wndFileView.InsertItem(filename, 1, 1, hRoot);
-					AddTables(filename, false, false, _T("COP"));
-					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
-				}
+				fileExt = CString("COP");
+				filename = filename.Left(filename.GetLength() - 8) + "_COP." + fileExt;
+				WriteCOPFile(filename, geojsonString);
 			}
-			DBFeatureset.Close();
-		}
-		//如果是线文件
-		else if (fileDialog.GetFileExt() == _T("COL"))
-		{
-			CoConnect conn;
-			GetConnect(conn);
-			CoFeatureset DBFeatureset;
-			if (DBFeatureset.Open(&conn, filename))
+			else if (geoType == "LineString")
 			{
-				if (DBFeatureset.NewTable(2))
-				{
-					HTREEITEM NewItem = m_wndFileView.InsertItem(filename, 2, 2, hRoot);
-					AddTables(filename, false, false, _T("COL"));
-					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
-				}
+				fileExt = CString("COL");
+				filename = filename.Left(filename.GetLength() - 8) + "_COL." + fileExt;
+				WriteCOLFile(filename, geojsonString);
 			}
-			DBFeatureset.Close();
-		}
-		//如果是区文件
-		else if (fileDialog.GetFileExt() == _T("COA"))
-		{
-			CoConnect conn;
-			GetConnect(conn);
-			CoFeatureset DBFeatureset;
-			if (DBFeatureset.Open(&conn, filename))
+			else if (geoType == "Polygon")
 			{
-				if (DBFeatureset.NewTable(3))
-				{
-					HTREEITEM NewItem = m_wndFileView.InsertItem(filename, 3, 3, hRoot);
-					AddTables(filename, false, false, _T("COA"));
-					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
-				}
+				fileExt = CString("COA");
+				filename = filename.Left(filename.GetLength() - 8) + "_COA." + fileExt;
+				WriteCOAFile(filename, geojsonString);
 			}
-			DBFeatureset.Close();
-		}
-		//如果是注释文件
-		else if (fileDialog.GetFileExt() == _T("CON"))
-		{
-			CoConnect conn;
-			GetConnect(conn);
-			CoFeatureset DBFeatureset;
-			if (DBFeatureset.Open(&conn, filename))
+			else if (geoType == "Tag")
 			{
-				if (DBFeatureset.NewTable(4))
-				{
-					HTREEITEM NewItem = m_wndFileView.InsertItem(filename, 4, 4, hRoot);
-					AddTables(filename, false, false, _T("CON"));
-					m_wndFileView.SetItemColor(NewItem, RGB(128, 128, 128));
-				}
+				fileExt = CString("CON");
+				filename = filename.Left(filename.GetLength() - 8) + "_CON." + fileExt;
+				WriteCONFile(filename, geojsonString);
 			}
-			DBFeatureset.Close();
 		}
+
+		if (fileExt == _T("COP") | fileExt == _T("COL") | fileExt == _T("COA") | fileExt == _T("CON"))
+			OnLoadFile(filename, fileExt);
 		else
-			AfxMessageBox("请打开标准的点线面文件！");
+			AfxMessageBox("文件格式不正确！");
 	}
 }
 /*=========end 工程操作菜单==========*/

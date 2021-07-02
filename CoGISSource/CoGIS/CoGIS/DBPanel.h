@@ -61,5 +61,6 @@ protected:
 public:
 	HTREEITEM FindTreeItem(HTREEITEM item,CString& strText)   ;
 	void DelViewState();
+	void OnLoadFile(CString filename, CString fileExt);
 };
 
